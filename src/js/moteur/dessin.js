@@ -5,20 +5,20 @@ function drawMap(rows,pal,x,y,s,flip){const w=rows[0].length;rows.forEach((row,i
 
 /* Magali, version affinée */
 const MPAL={H:'#3a2216',h:'#6a4430',S:'#f4c9aa',s:'#e0a88e',R:'#f09090',W:'#fff',E:'#3d7bd9',L:'#2a1610',M:'#d0607a',K:'#151515',k:'#2c2c2c',P:'#2d3f6b',D:'#3a6fd8',d:'#2a52a8',F:'#0d0d0d'};
-const MAG_TOP=["...HHHHHH...","..HhhhhhHH..",".HHhHHHHHHH.",".HHSSSSSSHH.",".HSLLSSLLSH.",".HSWESSEWSH.",".HSSSssSSSH.",".HRSSSSSSRH.",".HHSSMMSSHH.",".HHHSSSSHHH.","HHHHHSSHHHHH","HHKKKKKKKKHH","HSKKKKKKKKSH","HSKkKKKKkKSH",".S.KKKKKK.S.",".S.KKKKKK.S."];
+const MAG_TOP=["...HHHHHH...","..HhhhhhHH..",".HHhHHHHHHH.",".HHSSSSSSHH.",".HSLLSSLLSH.",".HSWESSEWSH.",".HSSSssSSSH.",".HRSSSSSSRH.",".HHSSMMSSHH.",".HHHSSSSHHH.","HHHHHSSHHHHH","HHKKKKKKKKHH","HSKKKKKKKKSH","HSKkKKKKkKSH",".SKKKKKKKKS.",".SKKKKKKKKS."];
 const MAG_DRESS_TOP=MAG_TOP.map((row,i)=>i>=11?row.replace(/K/g,'D').replace(/k/g,'d'):row);
 function magRows(step){const dressed=S.f.dressed;let top=dressed?MAG_DRESS_TOP:MAG_TOP;
-  const leg=step===1?"..PP...PP...":step===2?"...PP.PP....":"...PP..PP...";
+  const leg=step===1?".PPP...PPP..":step===2?"..PPP.PPP...":"..PPP..PPP..";
   let bot;
-  if(dressed){const sl=leg.replace(/P/g,'S');bot=[".S.DDDDDD.S.","..DDDDDDDD..","..DdDDDDdD..",".DDDDDDDDDD.",".DDDDDDDDDD.",sl,sl,sl,sl,sl,sl,sl.replace(/S/g,'F')]}
-  else bot=[".S.PPPPPP.S.","...PPPPPP...",leg,leg,leg,leg,leg,leg,leg,leg,leg.replace(/P/g,'F')];
+  if(dressed){const sl=leg.replace(/P/g,'S');bot=[".SDDDDDDDDS.",".DDDDDDDDDD.",".DDdDDDDdDD.",".DDDDDDDDDD.","DDDDDDDDDDDD",sl,sl,sl,sl,sl,sl,sl.replace(/S/g,'F')]}
+  else bot=[".SPPPPPPPPS.","..PPPPPPPP..",leg,leg,leg,leg,leg,leg,leg,leg,leg.replace(/P/g,'F')];
   if(!dressed)bot.splice(2,0,leg);
   return top.concat(bot)}
-const MAG_SIDE_TOP=["...HHHHHH...","..HhhhhhHH..",".HHhHHHHHHH.",".HHHHHSSSSH.",".HHHHSSLLS..",".HHHHSSWES..",".HHHHSSSSSS.",".HHHHSRSSS..",".HHHHSSSMS..",".HHHHHSSS...",".HHHHHSS....","..HHKKKKK...","..HHKKKKK...","..HKKSKKK...","...KKSKKK...","...KKSKKK..."];
+const MAG_SIDE_TOP=["...HHHHHH...","..HhhhhhHH..",".HHhHHHHHHH.",".HHHHHSSSSH.",".HHHHSSLLS..",".HHHHSSWES..",".HHHHSSSSSS.",".HHHHSRSSS..",".HHHHSSSMS..",".HHHHHSSS...",".HHHHHSS....","..HHKKKKKK..","..HHKKKKKK..","..HKKKSKKKK.","..KKKSKKKK..","..KKKSKKKK.."];
 function sideRows(step){const dressed=S.f.dressed;const top=dressed?MAG_SIDE_TOP.map((r,i)=>i>=11?r.replace(/K/g,'D'):r):MAG_SIDE_TOP;
-  const leg=step===1?"...PP.PP....":step===2?"..PP...PP...":"....PPP.....";let bot;
-  if(dressed){const sl=leg.replace(/P/g,'S');bot=["...DSDDD....","...DDDDD....","..DDDDDDD...","..DDDDDDD...",".DDDDDDDDD..",sl,sl,sl,sl,sl,sl,sl.replace(/S/g,'F')]}
-  else bot=["...PSPPP....","...PPPPP....",leg,leg,leg,leg,leg,leg,leg,leg,leg,leg.replace(/P/g,'F')];
+  const leg=step===1?"..PPPPPP....":step===2?".PPP...PPP..":"...PPPP.....";let bot;
+  if(dressed){const sl=leg.replace(/P/g,'S');bot=["..DDSDDDD...","..DDDDDDD...",".DDDDDDDDD..",".DDDDDDDDD..","DDDDDDDDDDD.",sl,sl,sl,sl,sl,sl,sl.replace(/S/g,'F')]}
+  else bot=["..PPSPPPP...","..PPPPPPP...",leg,leg,leg,leg,leg,leg,leg,leg,leg,leg.replace(/P/g,'F')];
   return top.concat(bot)}
 function drawMag(x,y,s=2,step=0,side=0){const rows=side?sideRows(step):magRows(step);const w=12*s,h=rows.length*s;const ox=Math.round(x-w/2),oy=Math.round(y-h);
   drawMap(rows,MPAL,ox,oy,s,side<0);
