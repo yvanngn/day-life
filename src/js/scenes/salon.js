@@ -92,16 +92,12 @@ function drawInter(){const on=(S.f.theme||0)>0,g=(t>>4)%2;
 function guirl(cols,y){for(let x=4;x<320;x+=8){const yy=y+Math.round(Math.sin(x/16)*2);r(x,yy,8,1,'#2a5a2a');r(x+3,yy+1,2,2,cols[((x>>3)+(t>>4))%cols.length])}}
 function coeur(x,y,c){r(x,y,2,1,c);r(x+3,y,2,1,c);r(x,y+1,5,1,c);r(x+1,y+2,3,1,c);r(x+2,y+3,1,1,c)}
 function drawTheme(){const th=S.f.theme||0;if(!th)return;
- if(th===1){ctx.fillStyle='rgba(40,0,50,.38)';ctx.fillRect(0,0,320,104);
-   for(let i=0;i<6;i++)r(0+i*3,0,1,14-i*2,'#ddd');for(let i=0;i<5;i++)r(0,i*3,14-i*2,1,'#ddd');
-   [[100,72],[112,72]].forEach(([x,y])=>{r(x,y,9,6,'#ff7a10');r(x+1,y-1,7,1,'#ff7a10');r(x+4,y-3,1,2,'#3a8a40');r(x+2,y+1,2,1,'#ffe060');r(x+5,y+1,2,1,'#ffe060');r(x+2,y+3,5,1,'#ffe060')});
-   for(let i=0;i<3;i++){const x=(t*0.6+i*110)%340-10,y=12+i*9+Math.sin(t/8+i)*3,w=(t>>3)%2;r(x,y,3,2,'#111');r(x-3,y-w,3,1,'#111');r(x+3,y-w,3,1,'#111')}
-   r(132,36,18,12,'#fff');r(134,46,3,3,'#fff');r(140,46,3,3,'#fff');r(145,46,3,3,'#fff');r(136,40,2,2,'#111');r(143,40,2,2,'#111')}
+ if(th===1){drawHalloween();return}
  else if(th===2){guirl(['#ff3030','#ffd23a','#3a9aff','#ffffff'],6);
    for(let i=0;i<8;i++){const x=131+(i*7+(t>>2))%20,y=29+(i*13+t/2)%55;r(x,y,1,1,'#fff')}
    r(301,40,12,12,'#2a7a3a');r(304,43,6,6,'#3a5a7a');r(306,40,2,2,'#ff3030');
    r(60,6,1,14,'#888');[[48,22],[66,26],[90,22]].forEach(([x,y],i)=>{r(x+4,6,1,y-6,'#888');r(x+2,y,5,5,['#ff3030','#ffd23a','#3a9aff'][i])});
-   r(36,68,10,10,'#e8e8e8');r(39,66,4,2,'#ff3030')}
+   r(36,68,10,10,'#e8e8e8');r(39,66,4,2,'#ff3030');sapin()}
  else if(th===3){ctx.fillStyle='rgba(10,10,50,.3)';ctx.fillRect(0,0,320,104);guirl(['#ffd23a','#f0f0f0'],6);
    ctx.fillStyle='#ffd23a';ctx.font='bold 10px monospace';ctx.fillText('2027',64,36);
    for(let i=0;i<14;i++){const x=(i*37)%320,y=(i*23+t*0.7)%104;r(x,y,2,1,['#ffd23a','#ff4a8a','#3ad0ff','#7dff8a'][i%4])}
@@ -111,3 +107,39 @@ function drawTheme(){const th=S.f.theme||0;if(!th)return;
    for(let i=0;i<5;i++){const x=(i*67+20)%300,y=100-((t*0.5+i*30)%95);coeur(x,y,'#ff7aaa')}
    r(104,66,2,12,'#2a8a3a');r(102,62,6,5,'#d0103a');r(103,61,4,1,'#ff3a6a')}
 }
+
+function drawHalloween(){
+ // tout plus sombre, papier peint lugubre
+ ctx.fillStyle='rgba(8,0,12,.74)';ctx.fillRect(0,0,320,104);ctx.fillStyle='rgba(8,0,12,.6)';ctx.fillRect(0,104,320,40);
+ for(let x=28;x<320;x+=12)r(x,0,1,104,'rgba(70,0,30,.5)');
+ // formes qui sortent des murs : visages et mains en relief
+ [[86,46],[160,10],[232,20],[276,14],[12,8]].forEach(([x,y],i)=>{const b=Math.sin(t/30+i)*1.5|0;
+   r(x-1,y-1+b,12,14,'#2a1830');r(x,y+b,10,12,'#5a4a5e');r(x+1,y+1+b,8,2,'#7a6a7e');r(x+2,y+4+b,2,3,'#000');r(x+6,y+4+b,2,3,'#000');r(x+3,y+9+b,4,2,'#000')});
+ [[124,40],[60,50],[304,18]].forEach(([x,y],i)=>{const e=(t/25+i)%8<4?1:0;r(x,y+e,6,3,'#5a4a5e');for(let k=0;k<4;k++)r(x+k*2-1,y-3+e,1,3,'#5a4a5e');r(x+1,y+3+e,4,4,'#4a3a4e')});
+ // sang qui coule
+ for(let i=0;i<10;i++){const x=8+i*31,L=8+((t/3+i*17)%40);r(x,0,3,4,'#7a0010');r(x+1,4,1,L,'#a00818');r(x,4+L,3,2,'#c01020')}
+ r(100,72,9,6,'#ff7a10');r(101,71,7,1,'#ff7a10');r(104,69,1,2,'#3a8a40');r(102,73,2,1,'#ffe060');r(105,73,2,1,'#ffe060');r(102,75,5,1,'#ffe060');
+ for(let i=0;i<4;i++){const x=(t*0.6+i*90)%340-10,y=12+i*8+Math.sin(t/8+i)*3,w=(t>>3)%2;r(x,y,3,2,'#000');r(x-3,y-w,3,1,'#000');r(x+3,y-w,3,1,'#000')}
+ for(let i=0;i<6;i++)r(i*3,0,1,14-i*2,'#bbb');for(let i=0;i<5;i++)r(0,i*3,14-i*2,1,'#bbb');
+ monstre()}
+// monstre hideux qui trône sur le fauteuil
+function monstre(){const x=186,y=50,bl=(t>>5)%9===0,ba=Math.sin(t/14)*1|0;
+ glow(x+18,y+26,34,'rgba(120,255,80,.18)');
+ r(x+2,y+30,32,26,'#2e5a22');r(x+0,y+36,6,18,'#24481a');r(x+30,y+36,6,18,'#24481a');
+ for(let k=0;k<3;k++){r(x-1+k*2,y+54,1,3,'#e8e0c0');r(x+31+k*2,y+54,1,3,'#e8e0c0')}
+ r(x+6,y+8+ba,24,24,'#3e7a2c');r(x+4,y+12+ba,28,16,'#3e7a2c');
+ r(x+5,y+2+ba,3,8,'#d8d0b0');r(x+4,y+0+ba,2,3,'#d8d0b0');r(x+28,y+2+ba,3,8,'#d8d0b0');r(x+30,y+0+ba,2,3,'#d8d0b0');
+ [[10,14],[24,22],[12,26]].forEach(([a,b])=>r(x+a,y+b+ba,3,2,'#5a9a3a'));
+ r(x+12,y+12+ba,12,9,'#f0f0d0');if(!bl){r(x+15,y+14+ba,6,5,'#d01010');r(x+17,y+15+ba,2,3,'#000')}else r(x+12,y+16+ba,12,1,'#1e3a14');
+ r(x+9,y+24+ba,18,6,'#1a0a0a');for(let k=0;k<5;k++){r(x+10+k*4,y+24+ba,2,2,'#f0f0d0');r(x+12+k*3,y+28+ba,1,2,'#f0f0d0')}
+ r(x+14,y+30+ba,2,3+((t>>3)%3),'#7ac850');
+ r(x+4,y+56,28,3,'#d8a020');r(x+6,y+53,4,3,'#d8a020');r(x+16,y+52,4,4,'#d8a020');r(x+26,y+53,4,3,'#d8a020');r(x+17,y+53,2,2,'#e02040')}
+// sapin et cadeaux (thème Noël)
+function sapin(){const x=258,y=56;
+ r(x+13,y+76,6,8,'#5a3a20');
+ for(let i=0;i<5;i++){const w=8+i*6;r(x+16-w/2,y+8+i*14,w,15,i%2?'#1e6a2e':'#247a36')}
+ r(x+14,y+2,4,4,'#ffd23a');r(x+15,y,2,8,'#ffd23a');r(x+12,y+3,8,2,'#ffd23a');
+ const C=['#ff3030','#ffd23a','#3a9aff','#ffffff','#ff7ad0'];
+ for(let i=0;i<14;i++){const a=(i*37)%28,b=12+((i*23)%62),w=4+Math.floor(b/14)*6;if(Math.abs(a-14)<w/2)r(x+2+a,y+b,2,2,C[(i+(t>>4))%C.length])}
+ [[x-8,y+76,14,10,'#d01828','#ffd23a'],[x+8,y+80,12,8,'#2a6ad8','#f6f6f6'],[x+22,y+74,12,12,'#2a9a4a','#ff3030'],[x+34,y+80,8,8,'#ffd23a','#d01828']].forEach(([a,b,w,h,c,k])=>{
+   r(a,b,w,h,c);r(a+w/2-1,b,2,h,k);r(a,b+h/2-1,w,2,k);r(a+w/2-3,b-2,2,2,k);r(a+w/2+1,b-2,2,2,k)})}

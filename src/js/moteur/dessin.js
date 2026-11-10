@@ -22,6 +22,7 @@ function sideRows(step){const dressed=S.f.dressed;const top=dressed?MAG_SIDE_TOP
   return top.concat(bot)}
 function drawMag(x,y,s=2,step=0,side=0){const rows=side?sideRows(step):magRows(step);const w=12*s,h=rows.length*s;const ox=Math.round(x-w/2),oy=Math.round(y-h);
   drawMap(rows,MPAL,ox,oy,s,side<0);
+  if(S.f.theme===2)bonnet(ox,oy,s,side);
   if(S.f.scratch){ctx.fillStyle='#d01020';for(let i=0;i<3;i++)for(let k=0;k<4;k++)ctx.fillRect(ox+(3+i*2)*s+k,oy+(4+k)*s,s,1)}}
 
 const CPAL_R={O:'#e0782a',o:'#a8521a',W:'#fff5e0',k:'#1a1a1a',P:'#ff8aa0'};
@@ -34,3 +35,6 @@ function drawCat(){const rows=cat.mode==='lick'?((t>>3)%2?CAT_L:CAT_L2):CAT_W;le
   if(cat.mode==='walk'||cat.mode==='chase'){if((t>>3)%2)rr=rows.map((x,i)=>i===6?"..O.O.O..O.O.O":i===7?"..W.W.W..W.W.W":x)}
   drawMap(rr,cpal(),Math.round(cat.x-14),Math.round(cat.y-16),2,cat.face<0)}
 
+function bonnet(ox,oy,s,side){const red='#d01828',dk='#9a0c18',W='#f6f6f6';
+  r(ox+1*s,oy-1*s,10*s,2*s,W);r(ox+2*s,oy-3*s,8*s,2*s,red);r(ox+3*s,oy-5*s,6*s,2*s,red);r(ox+4*s,oy-6*s,4*s,1*s,red);
+  r(ox+3*s,oy-3*s,1*s,2*s,dk);const px=side<0?ox+1*s:ox+8*s;r(px,oy-6*s,2*s,2*s,red);r(side<0?ox-1*s:ox+10*s,oy-6*s,2*s,2*s,W)}
