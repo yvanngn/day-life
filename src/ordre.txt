@@ -1,0 +1,17 @@
+# Ordre de concaténation des scripts (build.py)
+js/moteur/etat.js
+js/moteur/dessin.js
+js/donnees/icones.js
+js/scenes/commun.js
+js/scenes/chambre.js
+js/scenes/couloir.js
+js/scenes/bain.js
+js/scenes/salon.js
+js/scenes/actions.js
+js/moteur/interface.js
+js/moteur/moteur.js
+js/moteur/boucle.js
+js/moteur/audio.js
+js/moteur/musique.js
+js/scenes/intro.js
+js/moteur/menu.js
