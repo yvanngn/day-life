@@ -38,6 +38,7 @@ function drawSalon(){
  // switch
  r(290,92,16,5,'#333');r(288,92,3,5,'#ff4040');r(305,92,3,5,'#3080ff');
  ctx.restore();
+ drawTheme();drawInter();
  if(vitreOpen){r(131,29,20,75,'#2a4a30');r(131,84,20,20,'#4a8a3a')}
  if(!S.f.tMatou&&mt.state!=='gone'){const G={O:'#8a8a94',o:'#5a5a64',W:'#e8e8e8',k:'#1a1a1a',P:'#ff8aa0'};
    if(mt.state==='sleep'){drawMap(["....oOOOOo....","..OOoOOoOOOO..",".OoOOOOOOOoOOO",".OOOOOOOOOkOOk","..OOOOOOOOOOO."],G,mt.x-14,mt.y-10,2,false);
@@ -71,7 +72,42 @@ ROOMS.salon={walk:[14,305,116,140],draw:drawSalon,spots:()=>[
    prendre:async()=>{S.f.phone=true;addItem('telephone');check('tPhone');await say('mag',"Mon téléphone ! 47 notifications. Super.")}},
   {id:'coussin',name:'coussin',vis:()=>!S.f.cushion,r:[194,80,32,16],w:[178,130],examiner:()=>say('mag',"Un coussin. Il a l'air bosselé."),
    prendre:async()=>{S.f.cushion=true;addItem('coussin');await say('mag',"Tiens, il y a quelque chose dessous !")}},
+  {id:'inter',name:'interrupteur magique',r:[192,40,14,18],w:[200,124],
+   examiner:()=>say('mag',"Un interrupteur qui brille. Il n'allume aucune lampe... mais il change toute la déco !"),
+   utiliser:()=>magicSwitch(),ouvrir:()=>magicSwitch(),click:()=>magicSwitch(),prendre:()=>say('mag',"Il est vissé au mur. Et il a l'air de tenir à sa place.")},
   {id:'switch',name:'Switch',r:[264,88,24,10],w:[268,124],examiner:()=>say('mag',"Ma Switch. Ce soir, promis."),prendre:()=>say('mag',"Non, sinon je ne vais jamais au travail."),utiliser:()=>say('narr',"Ce soir. Pas maintenant.")},
   {id:'tv',name:'télé',r:[238,50,50,36],w:[226,132],examiner:()=>S.f.tvOn?say('tv',TVL[S.f.tv++%3]):say('mag',"Ma télé. Éteinte."),
    ouvrir:()=>toggleTV(),utiliser:()=>toggleTV()}
  ]};
+
+/* Interrupteur magique : classique → Halloween → Noël → Nouvel An → Saint-Valentin → classique */
+const THEMES=['classique','Halloween','Noël','Nouvel An','Saint-Valentin'];
+const THEME_TXT=["Et hop, retour à la déco classique.","Bouh ! Le salon passe en mode Halloween.","Oh, c'est Noël dans le salon !","Bonne année ! Enfin... en avance.","La Saint-Valentin... avec mon chat. Romantique."];
+async function magicSwitch(){S.f.theme=((S.f.theme||0)+1)%THEMES.length;SFX.light();[880,1175,1568].forEach((f,i)=>tone(f,.12,{type:'sine',vol:.07,at:.1+i*.09}));
+  await say('mag',THEME_TXT[S.f.theme])}
+function drawInter(){const on=(S.f.theme||0)>0,g=(t>>4)%2;
+  glow(199,49,13+g,on?'rgba(255,230,120,.55)':'rgba(180,140,255,.45)');
+  r(193,41,12,16,'#5a3a7a');r(194,42,10,14,'#f4ecff');r(197,44,4,10,'#c8b8e0');r(197,on?44:49,4,5,on?'#ffd23a':'#8a5ad8');
+  if(g){r(192,40,1,1,'#fff');r(206,56,1,1,'#fff')}else{r(206,41,1,1,'#fff');r(191,55,1,1,'#fff')}}
+function guirl(cols,y){for(let x=4;x<320;x+=8){const yy=y+Math.round(Math.sin(x/16)*2);r(x,yy,8,1,'#2a5a2a');r(x+3,yy+1,2,2,cols[((x>>3)+(t>>4))%cols.length])}}
+function coeur(x,y,c){r(x,y,2,1,c);r(x+3,y,2,1,c);r(x,y+1,5,1,c);r(x+1,y+2,3,1,c);r(x+2,y+3,1,1,c)}
+function drawTheme(){const th=S.f.theme||0;if(!th)return;
+ if(th===1){ctx.fillStyle='rgba(40,0,50,.38)';ctx.fillRect(0,0,320,104);
+   for(let i=0;i<6;i++)r(0+i*3,0,1,14-i*2,'#ddd');for(let i=0;i<5;i++)r(0,i*3,14-i*2,1,'#ddd');
+   [[100,72],[112,72]].forEach(([x,y])=>{r(x,y,9,6,'#ff7a10');r(x+1,y-1,7,1,'#ff7a10');r(x+4,y-3,1,2,'#3a8a40');r(x+2,y+1,2,1,'#ffe060');r(x+5,y+1,2,1,'#ffe060');r(x+2,y+3,5,1,'#ffe060')});
+   for(let i=0;i<3;i++){const x=(t*0.6+i*110)%340-10,y=12+i*9+Math.sin(t/8+i)*3,w=(t>>3)%2;r(x,y,3,2,'#111');r(x-3,y-w,3,1,'#111');r(x+3,y-w,3,1,'#111')}
+   r(132,36,18,12,'#fff');r(134,46,3,3,'#fff');r(140,46,3,3,'#fff');r(145,46,3,3,'#fff');r(136,40,2,2,'#111');r(143,40,2,2,'#111')}
+ else if(th===2){guirl(['#ff3030','#ffd23a','#3a9aff','#ffffff'],6);
+   for(let i=0;i<8;i++){const x=131+(i*7+(t>>2))%20,y=29+(i*13+t/2)%55;r(x,y,1,1,'#fff')}
+   r(301,40,12,12,'#2a7a3a');r(304,43,6,6,'#3a5a7a');r(306,40,2,2,'#ff3030');
+   r(60,6,1,14,'#888');[[48,22],[66,26],[90,22]].forEach(([x,y],i)=>{r(x+4,6,1,y-6,'#888');r(x+2,y,5,5,['#ff3030','#ffd23a','#3a9aff'][i])});
+   r(36,68,10,10,'#e8e8e8');r(39,66,4,2,'#ff3030')}
+ else if(th===3){ctx.fillStyle='rgba(10,10,50,.3)';ctx.fillRect(0,0,320,104);guirl(['#ffd23a','#f0f0f0'],6);
+   ctx.fillStyle='#ffd23a';ctx.font='bold 10px monospace';ctx.fillText('2027',64,36);
+   for(let i=0;i<14;i++){const x=(i*37)%320,y=(i*23+t*0.7)%104;r(x,y,2,1,['#ffd23a','#ff4a8a','#3ad0ff','#7dff8a'][i%4])}
+   r(104,62,5,16,'#1a4a2a');r(105,58,3,4,'#1a4a2a');r(105,56,3,2,'#ffd23a');r(112,70,3,8,'#e8f4ff');r(111,68,5,2,'#ffd23a')}
+ else if(th===4){ctx.fillStyle='rgba(255,110,170,.14)';ctx.fillRect(0,0,320,104);
+   for(let x=10;x<320;x+=22)coeur(x,6+((x/22|0)%2)*3,'#ff3a7a');
+   for(let i=0;i<5;i++){const x=(i*67+20)%300,y=100-((t*0.5+i*30)%95);coeur(x,y,'#ff7aaa')}
+   r(104,66,2,12,'#2a8a3a');r(102,62,6,5,'#d0103a');r(103,61,4,1,'#ff3a6a')}
+}

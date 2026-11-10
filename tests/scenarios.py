@@ -103,6 +103,8 @@ async def scenario_salon(nav):
     await E("T.act('prendre','fromage')"); verif('Fromage pris',await E("S.inv.includes('fromage')"))
     await E("T.act('prendre','coussin')"); await E("T.act('prendre','telephone')"); verif('Téléphone trouvé',await E("S.f.tPhone"))
     await E("T.act('prendre','clem')"); await E("T.act('utiliser','matou','clems')"); verif('Matou parti après le jonglage',await E("S.f.tMatou"))
+    for th in ['Halloween','Noël','Nouvel An','Saint-Valentin','classique']:
+        await E("T.act('utiliser','inter')"); verif('Interrupteur magique : thème '+th,await E("THEMES[S.f.theme]")==th)
     await E("T.act('utiliser','tv')"); verif('Télé allumée',await E("S.f.tvOn"))
     await E("T.act('utiliser','tv')"); verif('Télé éteinte',not await E("S.f.tvOn"))
     await fin(pg)
