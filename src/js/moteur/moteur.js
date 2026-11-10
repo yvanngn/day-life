@@ -46,6 +46,12 @@ function onLeft(e){
   if(h.isCat)cat.freeze=true;
   const wt=(pending&&h.wWith)?h.wWith:h.w;run(async()=>{await walkTo(...wt);await act(h)});
 }
+const curEl=$('cur');let curItem=null;
+function updCursor(e,h){const b=stage.getBoundingClientRect();curEl.style.display='block';curEl.style.left=(e.clientX-b.left)+'px';curEl.style.top=(e.clientY-b.top)+'px';
+  curEl.classList.toggle('hot',!!h);curEl.classList.toggle('exit',!!(h&&h.exit&&!pending&&!verb));
+  const it=mode==='play'?pending:null;if(it!==curItem){curItem=it;const c=curEl.querySelector('canvas');if(c)c.remove();if(it)curEl.appendChild(iconCanvas(it))}}
+stage.addEventListener('mousemove',e=>{const [px,py]=toScene(e);const h=mode==='play'?hitSpot(px,py):null;updCursor(e,h)});
+stage.addEventListener('mouseleave',()=>{curEl.style.display='none'});
 cv.addEventListener('mousemove',e=>{if(mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);const n=h?h.name:'';if(n!==hover){hover=n;updSentence()}});
 cv.addEventListener('mouseleave',()=>{hover='';updSentence()});
 stage.addEventListener('contextmenu',e=>{e.preventDefault();onRight(e)});

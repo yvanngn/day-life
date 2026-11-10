@@ -103,6 +103,13 @@ async def scenario_salon(nav):
     await E("T.act('prendre','fromage')"); verif('Fromage pris',await E("S.inv.includes('fromage')"))
     await E("T.act('prendre','coussin')"); await E("T.act('prendre','telephone')"); verif('Téléphone trouvé',await E("S.f.tPhone"))
     await E("T.act('prendre','clem')"); await E("T.act('utiliser','matou','clems')"); verif('Matou parti après le jonglage',await E("S.f.tMatou"))
+    async def survol(x,y):
+        b=await pg.locator('#cv').bounding_box(); await pg.mouse.move(b['x']+x/320*b['width'],b['y']+y/144*b['height']); return await E("curEl.className")
+    verif('Curseur normal hors objet',await survol(250,138)=='')
+    verif('Curseur qui pulse sur un objet',await survol(200,48)=='hot')
+    verif('Curseur vert sur une sortie',await survol(305,60)=='hot exit')
+    await E("pending='laser';verb='utiliser'"); await survol(200,48); verif('Icône de l’objet choisi sous le curseur',await E("!!curEl.querySelector('canvas')"))
+    await E("pending=null;verb=null")
     for th in ['Halloween','Noël','Nouvel An','Saint-Valentin','classique']:
         await E("T.act('utiliser','inter')"); verif('Interrupteur magique : thème '+th,await E("THEMES[S.f.theme]")==th)
     await E("T.act('utiliser','tv')"); verif('Télé allumée',await E("S.f.tvOn"))
