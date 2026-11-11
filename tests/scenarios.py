@@ -95,6 +95,12 @@ async def scenario_bain(nav):
 async def scenario_salon(nav):
     print('\n▶ Salon / cuisine')
     pg=await nouvelle_page(nav,'CAFE'); E=pg.evaluate
+    await E("run(()=>say('mag','Un texte assez long pour vérifier qu’il s’écrit petit à petit.')); 0"); await pg.wait_for_timeout(80)
+    verif('Le texte s’écrit petit à petit',await E("speech.n<speech.text.length"))
+    await pg.click('#stage'); verif('Clic : le texte est fini d’un coup, bulle toujours là',await E("!!speech&&speech.n===speech.text.length"))
+    await pg.click('#stage'); await pg.wait_for_timeout(50); verif('Clic suivant : la bulle se ferme',await E("!speech")); await E('T.settle()')
+    await pg.click('#aideBtn'); verif('Aide : indice vague d’abord',await E("speech.text.startsWith('Indice : ')"),await E("speech&&speech.text")); await E('T.settle()')
+    await pg.click('#aideBtn'); verif('Aide : indice précis si on redemande',await E("speech.text.startsWith('Indice précis : ')")); await E('T.settle()')
     await E("T.act('utiliser','cafe')"); verif('Café refusé tant que la souris est là',not await E("S.f.tCafe"))
     await E("T.act(null,'entree')"); verif('Départ refusé, liste incomplète',await E("mode")=='play')
     await E("T.act('utiliser','souris','chat')"); verif('Shaggy posé sur le bar',await E("S.f.catOnBar"))

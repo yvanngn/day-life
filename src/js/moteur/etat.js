@@ -7,7 +7,7 @@ const stage=$('stage'),speechEl=$('speech'),titleEl=$('title'),fadeEl=$('fade'),
 /* ---------- état ---------- */
 function defF(){return{armoire:false,kimono:false,robe:false,laser:false,cat:false,catWhite:false,catOnBar:false,mouseGone:false,
   dark:false,bath:false,dressed:false,serviette:false,cushion:false,phone:false,tvOn:false,tv:0,book:0,catTalk:0,scratch:false,used:{},
-  tShaggy:false,tCouloir:false,bust:false,litter:false,cheese:false,tCafe:false,tHabit:false,tPhone:false,tWork:false,tMatou:false,cheeseIn:false,theme:0}}
+  tShaggy:false,tCouloir:false,bust:false,litter:false,cheese:false,tCafe:false,tHabit:false,tPhone:false,tWork:false,tMatou:false,cheeseIn:false,theme:0,aide:{}}}
 function defState(){return{room:'chambre',x:205,y:130,inv:[],started:false,f:defF()}}
 let S=defState();
 function save(){S.x=Math.round(P.x);S.y=Math.round(P.y);try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}

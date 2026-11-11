@@ -25,6 +25,7 @@ html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Press Sta
 button{font-family:inherit;cursor:pointer}
 #verbs button{background:var(--panel2);color:var(--verb);border:2px solid #3b2b50;font-size:clamp(7px,1.6vw,13px);padding:10px 4px}
 #verbs button.on{color:var(--verbOn);border-color:var(--verbOn)}
+#aideBtn{background:#3a2a50;color:#ffd23a;border:2px solid #6a4a8a;font-size:clamp(7px,1.4vw,11px);padding:8px;margin-top:4px}
 #checkBtn{background:#2a3a20;color:#c8ff9a;border:2px solid #4a6a30;font-size:clamp(7px,1.4vw,11px);padding:8px}
 #right{display:flex;flex-direction:column;gap:6px}
 #inv{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;flex:1}

@@ -2,11 +2,15 @@
 const wait=ms=>new Promise(res=>setTimeout(res,ms));
 function waitSkip(ms){return new Promise(res=>{const tm=setTimeout(done,ms);skipFn=done;function done(){clearTimeout(tm);skipFn=null;res()}})}
 let speech=null;
-function say(who,text){if(who==='cat'||who==='matou'){/!!!/.test(text)?SFX.angry():/^Mrrrr\.?$/.test(text)?SFX.purr():SFX.meow()}else if(who==='tv')SFX.tv();queued=null;return new Promise(res=>{speech={who,text};placeSpeech();const tm=setTimeout(done,Math.max(1600,text.length*65));skipFn=done;
-  function done(){clearTimeout(tm);speech=null;placeSpeech();skipFn=null;setTimeout(res,150)}})}
+function say(who,text){if(who==='cat'||who==='matou'){/!!!/.test(text)?SFX.angry():/^Mrrrr\.?$/.test(text)?SFX.purr():SFX.meow()}else if(who==='tv')SFX.tv();queued=null;return new Promise(res=>{speech={who,text,n:0};placeSpeech();let tm=null;
+  const tick=setInterval(()=>{speech.n=Math.min(text.length,speech.n+2);placeSpeech();if(speech.n>=text.length)fini()},30);
+  function fini(){clearInterval(tick);speech.n=text.length;placeSpeech();tm=setTimeout(done,Math.max(1200,text.length*45))}
+  skipFn=()=>{if(speech&&speech.n<text.length){fini();return 'fini'}done()};
+  function done(){clearInterval(tick);clearTimeout(tm);speech=null;placeSpeech();skipFn=null;setTimeout(res,150)}})}
+const echap=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 let lastSp='';
 function placeSpeech(){if(!speech){speechEl.style.display='none';lastSp='';return}
-  const s=speech;if(speechEl.textContent!==s.text)speechEl.textContent=s.text;speechEl.style.display='block';
+  const s=speech,n=s.n??s.text.length;if(speechEl.dataset.n!=n||speechEl.dataset.t!==s.text){speechEl.dataset.n=n;speechEl.dataset.t=s.text;speechEl.innerHTML=echap(s.text.slice(0,n))+'<span style="visibility:hidden">'+echap(s.text.slice(n))+'</span>'}speechEl.style.display='block';
   speechEl.style.color=s.who==='narr'?'var(--narr)':s.who==='cat'?'var(--cat)':s.who==='tv'?'var(--tv)':'var(--mag)';
   let x=160,y=40,anchor='bottom';
   if(mode==='intro'){y=s.who==='narr'?40:95;anchor='middle'}
@@ -38,7 +42,7 @@ let queued=null;
 function replayQueued(){if(!queued||busy||mode!=='play')return;const q=queued;queued=null;if(performance.now()-q.t<1500)(q.right?onRight:onLeft)(q)}
 stage.addEventListener('click',e=>onLeft(e));
 function onLeft(e){
-  if(skipFn){queued={clientX:e.clientX,clientY:e.clientY,right:false,t:performance.now()};skipFn();return}
+  if(skipFn){if(skipFn()==='fini')return;queued={clientX:e.clientX,clientY:e.clientY,right:false,t:performance.now()};return}
   if(busy||mode!=='play')return;
   checkEl.style.display='none';
   const [px,py]=toScene(e);const h=hitSpot(px,py);
@@ -55,7 +59,7 @@ stage.addEventListener('mouseleave',()=>{curEl.style.display='none'});
 cv.addEventListener('mousemove',e=>{if(mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);const n=h?h.name:'';if(n!==hover){hover=n;updSentence()}});
 cv.addEventListener('mouseleave',()=>{hover='';updSentence()});
 stage.addEventListener('contextmenu',e=>{e.preventDefault();onRight(e)});
-function onRight(e){if(skipFn){queued={clientX:e.clientX,clientY:e.clientY,right:true,t:performance.now()};skipFn();return}if(busy||mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);if(!h)return;
+function onRight(e){if(skipFn){if(skipFn()==='fini')return;queued={clientX:e.clientX,clientY:e.clientY,right:true,t:performance.now()};return}if(busy||mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);if(!h)return;
   verb='examiner';pending=null;renderInv();updVerbs();if(h.isCat)cat.freeze=true;run(async()=>{await walkTo(...h.w);await act(h,true)})}
 invEl.addEventListener('contextmenu',e=>e.preventDefault());
 

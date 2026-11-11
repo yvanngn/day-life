@@ -14,4 +14,5 @@ js/moteur/boucle.js
 js/moteur/audio.js
 js/moteur/musique.js
 js/scenes/intro.js
+js/moteur/aide.js
 js/moteur/menu.js
