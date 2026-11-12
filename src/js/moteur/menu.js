@@ -5,7 +5,7 @@ function applyCode(code){const c=CODES[code];if(!c)return false;S=defState();S.s
 function startPlay(){mt.state=S.f.tMatou?'gone':'sleep';mt.x=160;mode='play';roomMusic();titleEl.style.opacity=0;closeMenu();renderInv();renderCheck();updSentence();save()}
 function openMenu(){const inGame=mode==='play';const sv=loadSave();
   const rows=Object.entries(CODES).map(([k,c])=>`<tr><td>${c.label}</td><td><b>${k}</b></td><td>${c.inv.length?c.inv.map(i=>ITEMS[i]).join(', '):'(rien)'}</td></tr>`).join('');
-  menuBox.innerHTML=`<h1>A day in the life ...</h1>
+  menuBox.innerHTML=`<h1 class="logo">A Day<span>in the Life</span></h1><p class="tagline">UNE MATINÉE (PAS SI) ORDINAIRE</p>
    <div class="btns">
     ${inGame?'<button id="mRes">▶ Reprendre</button>':''}
     ${!inGame&&sv?'<button id="mCont">▶ Continuer la partie</button>':''}

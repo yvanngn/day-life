@@ -1,10 +1,10 @@
-:root{--bg:#0b0710;--panel:#1d1426;--panel2:#2b1f38;--line:#5a3f78;--verb:#9fd6ff;--verbOn:#ffe14a;--text:#f2ead8;--narr:#ffd83a;--mag:#ffffff;--cat:#ffa64a;--tv:#9cff9c}
+:root{--bg:#0b0a14;--panel:#1a120c;--panel2:#8a3a14;--line:#f0b23c;--verb:#f7ecd6;--verbOn:#ffd84a;--text:#f7ecd6;--hi:#b4501f;--jade:#7fc98f;--narr:#ffd83a;--mag:#ffffff;--cat:#ffa64a;--tv:#9cff9c}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0b0710}}
 :root[data-theme="dark"]{--bg:#0b0710}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Press Start 2P',monospace}
 #app{position:relative;max-width:1280px;margin:0 auto;padding:12px 16px;user-select:none;-webkit-user-select:none;min-height:520px}
-#stage{position:relative;width:100%;overflow:hidden;background:#000;border:3px solid var(--line);border-bottom:none;cursor:crosshair}
+#stage{position:relative;width:100%;overflow:hidden;background:#000;border:4px solid #000;outline:3px solid var(--line);outline-offset:-7px;box-shadow:0 0 30px rgba(240,140,40,.25);cursor:crosshair}
 #cv{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;transition:filter .6s}
 #stage.shake{animation:shake .35s linear 2}
 @keyframes shake{0%,100%{transform:translate(0,0)}25%{transform:translate(-6px,3px)}50%{transform:translate(5px,-3px)}75%{transform:translate(-3px,-2px)}}
@@ -69,3 +69,28 @@ button{font-family:inherit;cursor:pointer}
 #cur.exit i{border-color:#7dff8a}#cur.exit b{background:#7dff8a}
 #cur canvas{position:absolute;left:20px;top:20px;width:22px;height:22px;image-rendering:pixelated;filter:drop-shadow(1px 1px 0 #000)}
 @keyframes curp{from{transform:scale(1)}to{transform:scale(1.4)}}
+
+/* ---- Upgrade graphique (esprit Low Kanta) ---- */
+body{background:radial-gradient(ellipse at top,#2a1a10 0%,var(--bg) 70%)}
+#speech{border-radius:4px;background:rgba(10,5,2,.72);border-width:2px;text-shadow:-2px 0 #000,2px 0 #000,0 -2px #000,0 2px #000,3px 3px 0 #000}
+#sentence{background:linear-gradient(#2b1d12,#140a07);border:0;border-top:4px solid var(--line);color:var(--jade);text-shadow:2px 2px 0 #000;outline:none}
+#ui{background:linear-gradient(#2b1d12,var(--panel));border:4px solid #000;border-top:0}
+#verbs button,#checkBtn,#aideBtn,#sndBtn,#menuBtn,#menu .btns button,#menu .pw button{background:var(--panel2);color:var(--verb);border:2px solid #000;box-shadow:inset 0 -4px 0 rgba(0,0,0,.35),inset 0 2px 0 rgba(255,220,160,.18);text-shadow:2px 2px 0 #000}
+#verbs button:hover,#checkBtn:hover,#aideBtn:hover,#sndBtn:hover,#menuBtn:hover,#menu .btns button:hover{background:var(--hi)}
+#verbs button.on{background:var(--verbOn);color:#2a160f;text-shadow:none;border-color:#000}
+#checkBtn{background:#2f5a3a}#aideBtn{background:#6a4a10;color:#ffd84a}
+#verbs button:active,#ui button:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 rgba(0,0,0,.35)}
+.slot{background:#140a07;border:2px dashed #4a2e1a}
+.slot.has{background:radial-gradient(circle,#7a4a34 0%,#3a2014 80%);border:2px solid var(--line);box-shadow:inset 0 0 6px rgba(240,178,60,.35)}
+#check{background:rgba(20,12,6,.94);border:2px solid var(--line);box-shadow:4px 4px 0 #000}
+#menu{background:radial-gradient(ellipse at center,rgba(60,24,8,.95),rgba(5,2,0,.98))}
+#menu .box{background:linear-gradient(#2b1d12,#1a120c);border:3px solid #000;outline:2px solid var(--line);box-shadow:6px 6px 0 #000}
+#menu h2{color:var(--line);border-top-color:#4a2e1a}
+#menu input{border-color:var(--line);background:#140a07}
+#menu td,#menu th{border-color:#4a2e1a}#menu th{color:var(--line)}
+#menu h1.logo{font-family:'Rubik Dirt','Press Start 2P',sans-serif;font-size:clamp(30px,8vw,64px);line-height:.9;margin:6px 0 10px;font-weight:normal;
+  background:linear-gradient(#fff4a0 0%,#ffcc30 35%,#f07818 70%,#b02a10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:2px #1a0a04;filter:drop-shadow(4px 4px 0 #000) drop-shadow(0 0 14px rgba(255,140,30,.5));transform:rotate(-3deg)}
+#menu h1.logo span{display:block;font-size:.55em}
+#menu .tagline{text-align:center;color:#ffd84a;letter-spacing:.2em;font-size:.85em;margin:0 0 14px;text-shadow:2px 2px 0 #000}
+#title{text-shadow:-2px 0 #000,2px 0 #000,0 -2px #000,0 2px #000,4px 4px 0 #6a2a00}
