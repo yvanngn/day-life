@@ -102,3 +102,12 @@ body.hd #title{text-shadow:-2px 0 #000,2px 0 #000,0 -2px #000,0 2px #000,4px 4px
 #skipBtn{position:absolute;right:8px;bottom:8px;z-index:7;display:none;font-size:clamp(7px,1.3vw,11px);padding:7px 10px;background:var(--panel2);color:var(--verb);border:2px solid #000;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35);text-shadow:2px 2px 0 #000;cursor:pointer}
 #skipBtn:hover{background:var(--hi)}
 #pwBox{margin-top:18px;border-top:2px solid #3b2b50;padding-top:12px}#pwBox summary{cursor:pointer;color:var(--verb);margin-bottom:8px}body.hd #pwBox{border-top-color:#4a2e1a}body.hd #pwBox summary{color:var(--line)}
+
+/* Titre V2 : affiche pop des années 60, rayures orange-jaune-turquoise, lisible */
+body.hd #menu h1.logo,body.hd .logo60{font-family:'Shrikhand','Press Start 2P',cursive;font-weight:normal;letter-spacing:.02em;line-height:.95;
+  background:none;-webkit-background-clip:border-box;background-clip:border-box;-webkit-text-stroke:0;color:#ffe24a;filter:none;transform:rotate(-4deg);
+  text-shadow:2px 2px 0 #e8451e,4px 4px 0 #e8451e,6px 6px 0 #1f9aa0,8px 8px 0 #1f9aa0,10px 10px 0 #2a1440}
+body.hd #menu h1.logo{font-size:clamp(30px,8vw,60px);margin:6px 0 18px}
+body.hd .logo60{display:block;font-size:clamp(28px,7vw,60px)}
+body.hd #menu h1.logo span,body.hd .logo60 span{display:block;font-size:.62em;color:#ff8fc8;margin-left:.6em;text-shadow:2px 2px 0 #7a2aa0,4px 4px 0 #7a2aa0,6px 6px 0 #2a1440}
+body.hd #menu .tagline{color:#7fe0d0;letter-spacing:.25em}
