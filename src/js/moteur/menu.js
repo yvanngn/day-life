@@ -11,9 +11,9 @@ function openMenu(){const inGame=mode==='play';const sv=loadSave();
     ${!inGame&&sv?'<button id="mCont">▶ Continuer la partie</button>':''}
     <button id="mNew">★ Nouvelle partie</button>
    </div>
-   <h2>Mot de passe</h2>
+   <details id="pwBox"><summary>Mots de passe</summary>
    <div class="pw"><input id="pwIn" placeholder="CODE" maxlength="12"><button id="pwGo">Valider</button></div><div class="msg" id="pwMsg"></div>
-   ${inGame?(()=>{const c=CODES[ROOMCODE[S.room]];return `<p>Code de la pièce actuelle : <b>${ROOMCODE[S.room]}</b><br><span class="note">Inventaire restauré : ${c.inv.length?c.inv.map(i=>ITEMS[i]).join(', '):'(rien)'}</span></p>`})():''}
+   ${inGame?(()=>{const c=CODES[ROOMCODE[S.room]];return `<p>Code de la pièce actuelle : <b>${ROOMCODE[S.room]}</b><br><span class="note">Inventaire restauré : ${c.inv.length?c.inv.map(i=>ITEMS[i]).join(', '):'(rien)'}</span></p>`})():''}</details>
    <h2>Paramètres</h2>
    <div class="btns"><button id="mHD">Graphismes : ${HD?'améliorés':'classiques'}</button></div>
    <p class="note">Version __VERSION__</p>

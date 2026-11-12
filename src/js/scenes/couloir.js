@@ -22,10 +22,10 @@ function drawCouloir(){
  // socle + buste
  r(192,74,24,4,'#d8d0c0');r(195,78,18,26,'#c8c0b0');r(192,100,24,4,'#d8d0c0');
  if(!S.f.bust){const B={g:'#6a5a40',G:'#4a3e2a',d:'#3a3020',m:'#7a6a4a',k:'#1e180e'};
-   drawMap(["....mmmmmm....","...mgggggGm...","..mgggggggGm..","..ggkgggkggG..","..gggggggggG..","..ggggdddggG..","..gdgggggdgG..","...ggkkkkgG...","....gggggG....","..mgggggggggm.",".mggggggggggGm"],B,193,51,1.6,false);
-   r(197,58,2,1,'#2a2014');r(207,66,1,2,'#2a2014');r(202,52,1,1,'#2a2014')}
- else{const top=(S.f.dressed?MAG_DRESS_TOP:MAG_TOP).slice(0,14);drawMap(top,MPAL,194,49,1.7,false);
-   if((t>>5)%4===0){r(198,50,1,1,'#fff');r(213,58,2,2,'#fff')}}
+   drawMap(["....mmmmmm....","...mgggggGm...","..mgggggggGm..","..ggkgggkggG..","..gggggggggG..","..ggggdddggG..","..gdgggggdgG..","...ggkkkkgG...","....gggggG....","..mgggggggggm.",".mggggggggggGm"],B,193,56.5,1.6,false);
+   r(197,63,2,1,'#2a2014');r(207,71,1,2,'#2a2014');r(202,57,1,1,'#2a2014')}
+ else{const top=(S.f.dressed?MAG_DRESS_TOP:MAG_TOP).slice(0,14);drawMap(top,MPAL,194,50.5,1.7,false);
+   if((t>>5)%4===0){r(198,52,1,1,'#fff');r(213,60,2,2,'#fff')}}
  if(HD)drawCouloirHD();
 }
 /* V2 : fond (mur, lambris, tapis) puis détails par-dessus */
