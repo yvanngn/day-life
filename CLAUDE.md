@@ -61,4 +61,4 @@ Exception : si l'utilisateur écrit « force », exécuter quand même.
 - Le choix suit la variable globale `HD` (`setHD`, mémorisé dans `localStorage` sous `dotl_hd`) ; CSS V2 préfixé par `body.hd`.
 - Décor : `drawX()` reste la V1, et la V2 ajoute ses détails par-dessus dans `drawXHD()` appelée en fin de `drawX()` si `HD`. Sprites : `dbl(rows)` puis retouches. Aide `rh(x,y,w,h,c)` pour les demi-pixels.
 - Dialogues V2 : en bas de l'écran avec le nom (`NOMS`), comme Sol-Rod ; V1 garde les bulles. Choix multiples : `await choose([[texte,valeur],…])` (liste en bas). Testé dans le groupe couloir.
-- Pièces en V2 : chambre, couloir, salle de bain. Reste : salon (décor).
+- V2 redessinée à la main (style Low Kanta) : chaque pièce a sa fonction `drawX2()` complète (appelée en tête de `drawX()` si `HD`), avec les outils de `commun.js` (`bandes2`, `ovale2`, `panneau2`, `ombre2`, `door2`). Faites : chambre, couloir, salle de bain, salon. Reste : sprites de Magali et Shaggy.
