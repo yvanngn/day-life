@@ -9,9 +9,19 @@ function say(who,text){if(who==='cat'||who==='matou'){/!!!/.test(text)?SFX.angry
   function done(){clearInterval(tick);clearTimeout(tm);speech=null;placeSpeech();skipFn=null;setTimeout(res,150)}})}
 const echap=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 let lastSp='';
+const NOMS={mag:'Magali',narr:'Narrateur',cat:'Shaggy',matou:'Le matou',tv:'Télé',tub:'Baignoire'};
+/* Dialogue à choix multiples : choose([[texte,valeur],...]) → valeur. V2 : liste en bas ; V1 : même liste, style classique */
+const choixEl=$('choix');choixEl.addEventListener('pointerdown',e=>e.stopPropagation());choixEl.addEventListener('click',e=>e.stopPropagation());
+function choose(opts){speech=null;placeSpeech();if(typeof TEST_CHOIX!=='undefined'&&TEST_CHOIX.length){const v=TEST_CHOIX.shift();return Promise.resolve(v===undefined?opts[0][1]:v)}
+  choixEl.innerHTML='';choixEl.style.display='block';
+  return new Promise(r=>opts.forEach(([t,v])=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{choixEl.style.display='none';r(v)};choixEl.appendChild(b)}))}
 function placeSpeech(){if(!speech){speechEl.style.display='none';lastSp='';return}
   const s=speech,n=s.n??s.text.length;if(speechEl.dataset.n!=n||speechEl.dataset.t!==s.text){speechEl.dataset.n=n;speechEl.dataset.t=s.text;speechEl.innerHTML=echap(s.text.slice(0,n))+'<span style="visibility:hidden">'+echap(s.text.slice(n))+'</span>'}speechEl.style.display='block';
+  const bas=HD&&mode!=='intro';speechEl.classList.toggle('bas',bas);
+  if(bas){/* V2 : dialogue en bas de l'écran avec le nom du personnage (comme Sol-Rod) */const nom=NOMS[s.who]||'';const h=(nom?'<b>'+nom+'</b>':'')+echap(s.text.slice(0,n))+'<span style="visibility:hidden">'+echap(s.text.slice(n))+'</span>';if(speechEl.dataset.h!==h){speechEl.dataset.h=h;speechEl.innerHTML=h}speechEl.style.left='';speechEl.style.top='';speechEl.style.transform='';lastSp=''}
+  else speechEl.dataset.h='';
   speechEl.style.color=s.who==='narr'?'var(--narr)':s.who==='cat'?'var(--cat)':s.who==='tv'?'var(--tv)':'var(--mag)';
+  if(bas)return;
   let x=160,y=40,anchor='bottom';
   if(mode==='intro'){y=s.who==='narr'?40:95;anchor='middle'}
   else if(s.who==='narr'){y=4;anchor='top'}
