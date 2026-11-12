@@ -24,3 +24,17 @@ function catWith(){return async()=>{
   await say('mag',"... Attends. Il est BLANC ?!");await say('mag',"Ah bah en fait il était juste sale !")}}
 
 const ROOMS={};
+/* ---------- V2 redessinée à la main (style Low Kanta) : outils au demi-pixel ---------- */
+// dégradé vertical en bandes avec une ligne tramée entre deux bandes
+function bandes2(x,y,w,h,cols){const n=cols.length,bh=h/n;for(let i=0;i<n;i++){const a=y+Math.round(i*bh*2)/2,b=y+Math.round((i+1)*bh*2)/2;rh(x,a,w,b-a,cols[i]);
+  if(i<n-1)for(let k=x+((i&1)?.5:0);k<x+w;k+=1)rh(k,b-.5,.5,.5,cols[i+1])}}
+function ovale2(cx,cy,rx,ry,c){for(let d=-ry;d<=ry;d+=.5){const w=Math.round(rx*Math.sqrt(Math.max(0,1-d*d/(ry*ry)))*2)/2;rh(cx-w,cy+d,2*w,.5,c)}}
+function cadre2(x,y,w,h,c){rh(x,y,w,.5,c);rh(x,y+h-.5,w,.5,c);rh(x,y,.5,h,c);rh(x+w-.5,y,.5,h,c)}
+function ombre2(cx,cy,rx){ctx.globalAlpha=.28;ovale2(cx,cy,rx,2,'#000');ctx.globalAlpha=.18;ovale2(cx,cy,rx+3,3,'#000');ctx.globalAlpha=1}
+// panneau de bois en relief : lumière en haut à gauche, ombre en bas à droite
+function panneau2(x,y,w,h,base,cl,cs){rh(x,y,w,h,base);rh(x,y,w,.5,cl);rh(x,y,.5,h,cl);rh(x,y+h-.5,w,.5,cs);rh(x+w-.5,y,.5,h,cs)}
+function veines2(x,y,w,h,c,s){for(let k=0;k<h;k+=2.5)rh(x+((k*7+s)%(w>8?w-6:1)),y+k+.5,Math.min(6,w-1),.5,c)}
+function door2(x,y){rh(x-3,y-3,28,72,'#1a100a');panneau2(x-3,y-3,28,72,'#3a2414','#6a4426','#140a06');
+  bandes2(x,y,22,66,['#8a5a34','#7e5230','#74492a','#6a4226']);veines2(x,y,22,66,'#5a3820',3);
+  panneau2(x+3,y+4,16,24,'#7a5030','#a87448','#4a2c18');panneau2(x+3,y+34,16,26,'#7a5030','#a87448','#4a2c18');
+  rh(x+5,y+6,12,20,'#835838');rh(x+5,y+36,12,22,'#835838');ovale2(x+4,y+34,1.5,1.5,'#c8982e');rh(x+3.5,y+33,1,.5,'#fff0a0');rh(x,y+65.5,22,.5,'#000')}
