@@ -22,7 +22,7 @@ function openMenu(){const inGame=mode==='play';const sv=loadSave();
   const g=id=>document.getElementById(id);
   if(g('mRes'))g('mRes').onclick=closeMenu;
   if(g('mCont'))g('mCont').onclick=()=>{S=mergeState(sv);P.x=P.tx=S.x;P.y=P.ty=S.y;startPlay()};
-  g('mHD').onclick=()=>{setHD(!HD);g('mHD').textContent='Graphismes : '+(HD?'améliorés':'classiques')};
+  g('mHD').onclick=()=>{setHD(!HD);renderInv();g('mHD').textContent='Graphismes : '+(HD?'améliorés':'classiques')};
   g('mNew').onclick=()=>{S=defState();renderInv();closeMenu();intro()};
   const tryCode=()=>{const v=g('pwIn').value.trim().toUpperCase();if(applyCode(v)){startPlay();run(()=>say('narr',"Mot de passe accepté. Reprise : "+CODES[v].label+"."))}else g('pwMsg').textContent="Mot de passe inconnu."};
   g('pwGo').onclick=tryCode;g('pwIn').onkeydown=e=>{if(e.key==='Enter')tryCode()};

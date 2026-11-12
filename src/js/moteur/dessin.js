@@ -40,8 +40,14 @@ const CAT_L2=["..............","..............","O.............","O.OOOOOOOOO...
 function drawCat(){const rows=cat.mode==='lick'?((t>>3)%2?CAT_L:CAT_L2):CAT_W;let rr=rows;
   if(cat.mode==='walk'||cat.mode==='chase'){if((t>>3)%2)rr=rows.map((x,i)=>i===6?"..O.O.O..O.O.O":i===7?"..W.W.W..W.W.W":x)}
   const hd=dbl(rr).map((l,i)=>i===5||i===11?l.replace(/kk/g,'kW').replace(/kW$/,'kW'):i===9?l.replace(/oo/g,'oO'):l);
-  HD?drawMap(hd,cpal(),Math.round(cat.x-14),Math.round(cat.y-16),1,cat.face<0):drawMap(rr,cpal(),Math.round(cat.x-14),Math.round(cat.y-16),2,cat.face<0)}
+  drawCatRows(rr,cpal(),Math.round(cat.x-14),Math.round(cat.y-16),cat.face<0)}
 
 function bonnet(ox,oy,s,side){const red='#d01828',dk='#9a0c18',W='#f6f6f6';
   r(ox+1*s,oy-1*s,10*s,2*s,W);r(ox+2*s,oy-3*s,8*s,2*s,red);r(ox+3*s,oy-5*s,6*s,2*s,red);r(ox+4*s,oy-6*s,4*s,1*s,red);
   r(ox+3*s,oy-3*s,1*s,2*s,dk);const px=side<0?ox+1*s:ox+8*s;r(px,oy-6*s,2*s,2*s,red);r(side<0?ox-1*s:ox+10*s,oy-6*s,2*s,2*s,W)}
+
+/* ---- V2 : aides haute définition ---- */
+const rh=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(x,y,w,h)};
+/* chat V2 : doublé, reflet dans l'œil, ventre et rayures nuancés */
+function catHD(rows){return dbl(rows).map((l,i)=>i===5||i===11?l.replace(/kk/g,'kW'):i===9?l.replace(/oo/g,'oO'):i===7||i===8?l.replace(/OOOO/g,'OOoO'):l)}
+function drawCatRows(rows,pal,x,y,flip){HD?drawMap(catHD(rows),pal,x,y,1,flip):drawMap(rows,pal,x,y,2,flip)}

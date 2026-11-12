@@ -54,3 +54,9 @@ Exception : si l'utilisateur écrit « force », exécuter quand même.
 
 ## Interface (skill `interface-jeu`)
 - Clic droit : jamais le menu du navigateur dans le jeu (écouteur `contextmenu` sur `#app`, dans `src/js/moteur/moteur.js`), sauf dans les champs de saisie. Testé dans le groupe du menu.
+
+## Graphismes V1 / V2 (paramètre « Graphismes » du menu)
+- Tout graphisme ajouté ou modifié existe en **deux versions** : V1 classique (pixel art d'origine) et V2 améliorée (haute définition : cellules d'une demi-unité sur le canvas 640×288, ombres, reflets, textures).
+- Le choix suit la variable globale `HD` (`setHD`, mémorisé dans `localStorage` sous `dotl_hd`) ; CSS V2 préfixé par `body.hd`.
+- Décor : `drawX()` reste la V1, et la V2 ajoute ses détails par-dessus dans `drawXHD()` appelée en fin de `drawX()` si `HD`. Sprites : `dbl(rows)` puis retouches. Aide `rh(x,y,w,h,c)` pour les demi-pixels.
+- Pièces en V2 : chambre. Reste : couloir, salle de bain, salon (décor).

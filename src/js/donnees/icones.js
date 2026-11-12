@@ -11,6 +11,18 @@ const ICONS={
  fromage:{p:{y:'#f2c832',d:'#d8a820',o:'#c89818'},m:["............","............","..........y.","........yyy.","......yyyyy.","....yyydyyy.","..yyyyyyyyy.",".yydyyyyydy.",".yyyyyydyyy.",".oooooooooo.","............","............"]},
  coussin:{p:{c:'#d0507a',d:'#9a2a50'},m:["............",".cccccccccc.","cccccccccccc","ccdcccccdccc","cccccccccccc","ccccccdccccc","cccccccccccc","ccdcccccdccc","cccccccccccc",".cccccccccc.","............","............"]}
 };
-function iconCanvas(id){const c=document.createElement('canvas');c.width=12;c.height=12;const x=c.getContext('2d');const ic=ICONS[id];const pal=id==='chat'?cpal():ic.p;
+function iconCanvas(id){if(HD)return iconHD(id);const c=document.createElement('canvas');c.width=12;c.height=12;const x=c.getContext('2d');const ic=ICONS[id];const pal=id==='chat'?cpal():ic.p;
   ic.m.forEach((row,i)=>{for(let j=0;j<12;j++){const col=pal[row[j]];if(col){x.fillStyle=col;x.fillRect(j,i,1,1)}}});return c}
 
+
+/* V2 : icône 24×24, contour sombre, ombre en bas à droite et reflet en haut à gauche */
+function teinte(hex,f){const n=parseInt(hex.slice(1).padEnd(6,hex.slice(1)),16);let R=n>>16,G=n>>8&255,B=n&255;const m=v=>Math.max(0,Math.min(255,Math.round(f>1?v+(255-v)*(f-1):v*f)));return `rgb(${m(R)},${m(G)},${m(B)})`}
+function iconHD(id){const c=document.createElement('canvas');c.width=24;c.height=24;const x=c.getContext('2d');const ic=ICONS[id];const pal=id==='chat'?cpal():ic.p;
+  const col=(i,j)=>i>=0&&i<12&&j>=0&&j<12?pal[ic.m[i][j]]:null;
+  x.fillStyle='rgba(0,0,0,.35)';for(let i=0;i<12;i++)for(let j=0;j<12;j++)if(col(i,j))x.fillRect(j*2+1,i*2+1,2,2);
+  for(let i=0;i<12;i++)for(let j=0;j<12;j++){const k=col(i,j);if(!k)continue;const hx=k.length===4?'#'+[...k.slice(1)].map(a=>a+a).join(''):k;
+    x.fillStyle=hx;x.fillRect(j*2,i*2,2,2);
+    if(!col(i-1,j)||!col(i,j-1)){x.fillStyle=teinte(hx,1.35);x.fillRect(j*2,i*2,1,1)}
+    if(!col(i+1,j)){x.fillStyle=teinte(hx,.62);x.fillRect(j*2,i*2+1,2,1)}
+    if(!col(i,j+1)){x.fillStyle=teinte(hx,.7);x.fillRect(j*2+1,i*2,1,2)}}
+  return c}

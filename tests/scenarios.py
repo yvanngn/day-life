@@ -48,6 +48,7 @@ async def scenario_menu(nav):
     verif('Version affichée',await E("/Version \\d+\\.\\d+\\.\\d+/.test(menuBox.textContent)"))
     await pg.click('#mHD'); verif('Paramètre graphismes classiques',await E("!HD&&!document.body.classList.contains('hd')&&localStorage.getItem('dotl_hd')==='0'"))
     await pg.click('#mHD'); verif('Paramètre graphismes améliorés',await E("HD&&document.body.classList.contains('hd')"))
+    verif('Icônes V2 en 24×24, V1 en 12×12',await E("iconCanvas('laser').width===24&&(HD=false,iconCanvas('laser').width===12)&&(HD=true)"))
     await pg.fill('#pwIn','faux'); await pg.press('#pwIn','Enter')
     verif('Mot de passe inconnu refusé',await E("document.getElementById('pwMsg').textContent")=='Mot de passe inconnu.')
     await pg.fill('#pwIn','kimono'); await pg.press('#pwIn','Enter'); await E('T.settle()')

@@ -11,3 +11,4 @@ description: Développer et maintenir le jeu point and click « A Day in the Lif
 4. Toute nouveauté = une vérification ajoutée dans `tests/scenarios.py`.
 5. Réponses courtes, lecture ciblée (grep, sed -n). Exports et republication sur claude.ai seulement sur demande.
 6. Pousser sur `main` publie le jeu (voir skill `deploiement-day-life`).
+7. Graphismes : toujours une V1 classique et une V2 améliorée (voir « Graphismes V1 / V2 » dans `CLAUDE.md`).
