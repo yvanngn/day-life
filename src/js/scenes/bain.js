@@ -1,5 +1,6 @@
 /* Salle de bain : décor et objets */
 function drawBain(){
+ if(HD)return drawBain2();
  r(0,0,320,104,'#bfe0e8');for(let x=0;x<320;x+=10)r(x,0,1,104,'#a8ccd6');for(let y=0;y<104;y+=10)r(0,y,320,1,'#a8ccd6');
  for(let y=104,i=0;y<144;y+=8,i++)for(let x=0,j=0;x<320;x+=8,j++)r(x,y,8,8,(i+j)%2?'#222':'#eee');
  if(HD)drawBainFondHD();
@@ -57,3 +58,51 @@ ROOMS.bain={walk:[14,300,116,140],draw:drawBain,spots:()=>[
   {id:'evier',name:'évier',r:[208,18,56,92],w:[202,126],examiner:()=>say('mag',S.f.scratch?"Ce chat m'a défigurée...":"Un évier et un miroir. Coucou toi !"),utiliser:()=>say('mag',"Un peu d'eau fraîche sur le visage. Ça réveille !"),
    with:{chat:catWith()}}
  ]};
+
+/* ---------- V2 : salle de bain entièrement redessinée à la main ---------- */
+function drawBain2(){
+ // faïence : carreaux biseautés, joints, reflets
+ bandes2(0,0,320,104,['#b4d8e2','#bce0e8','#c4e4ec','#bcdfe8']);
+ for(let x=0;x<320;x+=10)for(let y=0;y<104;y+=10){rh(x,y,10,.5,'#94bcc8');rh(x,y,.5,10,'#94bcc8');rh(x+.5,y+.5,9,.5,'#e0f4f8');rh(x+.5,y+.5,.5,9,'#d8f0f6');rh(x+.5,y+9.5,9.5,.5,'#a4c8d2');rh(x+9.5,y+.5,.5,9.5,'#a8ccd6');
+  if((x*7+y*3)%70===0){rh(x+3,y+2,2.5,.5,'#fff');rh(x+2.5,y+2.5,.5,1.5,'#fff')}}
+ // frise de mosaïque
+ for(let x=0;x<320;x+=5){rh(x,60,5,4,(x/5)%2?'#3a8aa8':'#5ab0c8');rh(x,60,5,.5,'#a8e0f0');rh(x,63.5,5,.5,'#1e5a70')}
+ panneau2(0,100,320,4,'#e8f4f8','#ffffff','#7a9aa4');
+ // sol : damier brillant avec reflets
+ for(let y=104,i=0;y<144;y+=8,i++)for(let x=0,j=0;x<320;x+=8,j++){const n=(i+j)%2;rh(x,y,8,8,n?'#1e1e22':'#ececec');rh(x,y,8,.5,n?'#3a3a40':'#fff');rh(x,y+7.5,8,.5,n?'#0a0a0c':'#c8c8c8');if(!n){rh(x+1,y+1,2,.5,'#fff');rh(x+1,y+1.5,.5,1,'#fff')}else rh(x+1,y+1,1.5,.5,'#4a4a52')}
+ ctx.globalAlpha=.12;bandes2(0,104,320,14,['#bfe0e8','#8ab0ba']);ctx.globalAlpha=1;
+ // tringle et rideau
+ rh(18,25,122,3,'#9aa0a8');rh(18,25,122,.5,'#e8eef4');rh(18,27.5,122,.5,'#5a6068');ovale2(18,26.5,1.5,1.5,'#c8ced6');ovale2(140,26.5,1.5,1.5,'#c8ced6');
+ // pommeau de douche
+ rh(31,30,1,40,'#b8bec6');rh(31,30,.5,40,'#eef2f6');ovale2(33,72,4,2,'#c8ced6');rh(30,72,6,.5,'#fff');for(let k=0;k<4;k++)rh(30.5+k*1.5,73.5,.5,.5,'#5a6068');
+ // baignoire sur pieds
+ ombre2(79,116,62);
+ if(bathing){ctx.globalAlpha=.5;rh(32,75,2,9,'#7ac8ff');ctx.globalAlpha=1;for(let i=0;i<6;i++){const ph=(t/6+i*5)%30;ovale2(31+i*18,70-ph,1.2,1.2,'rgba(255,255,255,.8)');rh(30.5+i*18,69.5-ph,.5,.5,'#fff')}}
+ ovale2(79,84,58,3,'#ffffff');ovale2(79,84,55,2,'#d8e0e4');
+ bandes2(22,84,114,22,['#ffffff','#f6f8f8','#eceff0','#dde2e4','#cfd4d6']);
+ ovale2(79,106,55,4,'#cfd4d6');rh(24,86,1,20,'#fff');rh(134,86,1,20,'#b8bec0');rh(30,89,64,1,'#fff');rh(30,91,30,.5,'#fff');
+ [28,124].forEach(x=>{ovale2(x+3,110,3,1.5,'#c8a040');rh(x+1,110,4,4,'#c8a040');rh(x+1,110,1,4,'#f0d070');rh(x+4.5,110,.5,4,'#8a6418');ovale2(x+3,114,4,1,'#a8822a')});
+ if(bathing){for(let k=0;k<10;k+=.5){const v=Math.sin(k*1.4+t/40);rh(20+k*11.8,28,11.8,62,v>.3?'#ec7a98':v>-.3?'#e06a8a':'#c25272')}
+   for(let x=24;x<138;x+=8)ovale2(x+1,28.5,1.2,1.2,'#e8eef4')}
+ else{for(let k=0;k<10;k+=.5){const v=Math.sin(k*1.8);rh(20+k,28,.5,62+Math.sin(k)*1.5,v>.3?'#ec7a98':v>-.3?'#e06a8a':'#b84a6a')}ovale2(24,28.5,1.2,1.2,'#e8eef4');ovale2(28,28.5,1.2,1.2,'#e8eef4')}
+ // toilettes
+ ombre2(175,108,12);
+ panneau2(166,62,18,20,'#f4f4f4','#ffffff','#c8ccce');rh(166,62,18,3,'#e0e4e6');rh(166,62,18,.5,'#fff');ovale2(180,66,1.5,1,'#c8ced6');rh(179,65.5,1,.5,'#fff');
+ ovale2(175,86,15,4,'#ffffff');ovale2(175,86,12,2.5,'#d8dee0');ovale2(175,86,9,1.5,'#b8d8e8');
+ bandes2(167,89,16,19,['#f0f2f2','#e2e6e8','#d4d8da']);rh(167,89,.5,19,'#fff');rh(182.5,89,.5,19,'#b8bcbe');ovale2(175,108,9,1.5,'#d4d8da');
+ // miroir et lavabo
+ panneau2(210,18,52,42,'#8a9098','#d8dee4','#4a5058');panneau2(212,20,48,38,'#b8bec6','#eef2f6','#6a7078');
+ bandes2(214,22,44,34,['#cfe8f0','#d8eef4','#e2f4f8','#d4ecf2']);
+ ctx.globalAlpha=.7;for(let k=0;k<8;k++){rh(218+k,26+k*2,6,.5,'#fff')}rh(244,40,8,.5,'#fff');rh(246,42,5,.5,'#fff');ctx.globalAlpha=1;
+ ombre2(236,109,10);
+ rh(233,62,2,8,'#b8bec6');rh(233,62,.5,8,'#fff');rh(231,62,6,1.5,'#c8ced6');ovale2(229.5,64,1.5,1,'#e06a6a');ovale2(238.5,64,1.5,1,'#6a9ae0');
+ ovale2(236,71,27,3,'#ffffff');ovale2(236,71,22,1.5,'#d8e0e4');ovale2(236,71,4,.8,'#8a9098');
+ bandes2(214,72,44,6,['#f4f6f6','#e4e8ea']);ovale2(236,78,22,2,'#e4e8ea');
+ bandes2(231,79,10,29,['#f0f2f2','#e0e4e6','#d0d4d6']);rh(231,79,.5,29,'#fff');rh(240.5,79,.5,29,'#b8bcbe');ovale2(236,108,7,1.5,'#d0d4d6');
+ // porte-serviette
+ rh(266,63.5,20,3,'#c8a040');rh(266,63.5,20,.5,'#ffe090');rh(266,66,20,.5,'#8a6418');ovale2(266,65,1.5,1.5,'#a8822a');ovale2(286,65,1.5,1.5,'#a8822a');
+ if(!S.f.serviette){bandes2(270,67,12,26,['#ffffff','#f6f6f6','#ececec']);rh(270,67,.5,26,'#fff');rh(281.5,67,.5,26,'#d0d0d0');
+   rh(270,69,12,2,'#f0a0b0');rh(270,69,12,.5,'#ffc8d4');rh(270,88,12,2,'#f0a0b0');rh(270,89.5,12,.5,'#c87888');for(let k=0;k<12;k+=1)rh(270+k,93,.5,1,'#e8e8e8')}
+ door2(293,37);
+ glow(236,40,80,'rgba(255,255,255,0.10)');
+}
