@@ -23,7 +23,7 @@ checkEl.addEventListener('click',e=>{e.stopPropagation();checkEl.style.display='
 
 /* ---------- verbes & phrase ---------- */
 const VL={ouvrir:'Ouvrir',examiner:'Examiner',prendre:'Prendre',utiliser:'Utiliser'};
-document.querySelectorAll('#verbs button').forEach(b=>b.onclick=()=>{if(busy)return;verb=verb===b.dataset.v?null:b.dataset.v;pending=null;renderInv();updVerbs()});
+document.querySelectorAll('#verbs button').forEach(b=>b.onclick=()=>{if(busy){nextVerb=b.dataset.v;document.querySelectorAll('#verbs button').forEach(x=>x.classList.toggle('on',x===b));if(skipFn&&skipFn()==='fini'&&skipFn)skipFn();return}verb=verb===b.dataset.v?null:b.dataset.v;pending=null;renderInv();updVerbs()});
 function updVerbs(){document.querySelectorAll('#verbs button').forEach(b=>b.classList.toggle('on',b.dataset.v===verb));updSentence()}
 function updSentence(){let s=verb?VL[verb]:'Aller vers';if(pending)s+=' '+ITEMS[pending]+' avec';if(hover)s+=' '+hover;sentEl.textContent=mode==='play'?s:' '}
 function resetVerb(){verb=null;pending=null;renderInv();updVerbs()}

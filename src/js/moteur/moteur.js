@@ -30,7 +30,7 @@ function placeSpeech(){if(!speech){speechEl.style.display='none';lastSp='';retur
 function walkTo(x,y){const R=ROOMS[S.room].walk;P.tx=Math.max(R[0],Math.min(R[1],x));P.ty=Math.max(R[2],Math.min(R[3],y));P.walk=true;
   return new Promise(res=>{if(P.res)P.res();P.res=res})}
 async function run(fn){busy=true;skipAll=false;const before=JSON.stringify([S.room,S.inv,S.f]);const v=verb;try{await fn()}catch(e){console.error(e)}busy=false;skipAll=false;cat.freeze=false;
-  const failed=JSON.stringify([S.room,S.inv,S.f])===before;resetVerb();if(failed&&v&&mode==='play'){verb=v;updVerbs()}save();setTimeout(replayQueued,0)}
+  const failed=JSON.stringify([S.room,S.inv,S.f])===before;resetVerb();if(failed&&v&&mode==='play'){verb=v;updVerbs()}if(nextVerb&&mode==='play'){verb=nextVerb;pending=null;renderInv();updVerbs()}nextVerb=null;save();setTimeout(replayQueued,0)}
 async function fade(on){fadeEl.style.opacity=on?1:0;await wait(380)}
 async function go(room,x,y){SFX.door();await fade(true);if(S.room==='bain')S.f.scratch=false;S.room=room;roomMusic();P.x=P.tx=x;P.y=P.ty=y;P.walk=false;if(room==='couloir'){cat.x=150;cat.mode='walk'}save();await fade(false)}
 
