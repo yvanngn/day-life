@@ -72,24 +72,27 @@ stage.addEventListener('contextmenu',e=>{e.preventDefault();onRight(e)});
 function onRight(e){if(skipFn){if(skipFn()==='fini')return;queued={clientX:e.clientX,clientY:e.clientY,right:true,t:performance.now()};return}if(busy||mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);if(!h)return;
   if(!HD)return choisirRoue(h,'examiner'); // V1 : clic droit classique = examiner
   ouvrirRoue(h,e.clientX,e.clientY)}
-/* Roue des verbes (comme Un Noël au Vietnam) : clic gauche = parler ou examiner selon la cible, clic droit = roue */
+/* Roue des actions V2 (comme Low Kanta) : clic gauche = action évidente, clic droit (ou appui long) = roue, toutes les actions sur toute cible */
 const PERSOS=['shaggy','matou','shaggyBar'];
-const ROUE_OBJ=[['ouvrir','🚪','Ouvrir'],['examiner','👁️','Examiner'],['prendre','✋','Prendre'],['utiliser','⚙️','Utiliser']];
-const ROUE_PERSO=[['parler','💬','Parler'],['examiner','👁️','Examiner'],['prendre','✋','Prendre'],['utiliser','⚙️','Utiliser']];
+const ROUE=[['ouvrir','🚪','Ouvrir'],['examiner','👁️','Examiner'],['prendre','✋','Prendre'],['utiliser','⚙️','Utiliser'],['parler','💬','Parler']];
+const ROUE_OBJ=ROUE,ROUE_PERSO=ROUE; // tuto
 const roueEl=$('roue');let roueFermee=0;
 roueEl.addEventListener('pointerdown',e=>e.stopPropagation());roueEl.addEventListener('click',e=>e.stopPropagation());roueEl.addEventListener('contextmenu',e=>{e.preventDefault();e.stopPropagation()});
 function roueOuverte(){return roueEl.style.display==='block'}
-function fermerRoue(){roueEl.style.display='none'}
-function ouvrirRoue(h,cx,cy){const g=stage.getBoundingClientRect(),R=Math.max(54,Math.min(84,g.width*.075)),m=R+40;
-  const x=Math.max(m,Math.min(g.width-m,cx-g.left)),y=Math.max(m+26,Math.min(g.height-m,cy-g.top));
-  roueEl.style.left=x+'px';roueEl.style.top=y+'px';roueEl.style.setProperty('--rr',(2*R+80)+'px');roueEl.style.setProperty('--rt',(-R-62)+'px');
-  roueEl.innerHTML='<div class="rtitre"></div>';roueEl.firstChild.textContent=h.name;
-  const opts=PERSOS.includes(h.id)?ROUE_PERSO:ROUE_OBJ;
-  opts.forEach(([a,ic,lib],k)=>{const ang=-Math.PI/2+k*2*Math.PI/opts.length,b=document.createElement('button');
-    b.className='rb';b.dataset.a=a;b.title=lib;b.innerHTML='<span>'+ic+'</span><i>'+lib+'</i>';
+function fermerRoue(){roueEl.style.display='none';roueEl.innerHTML=''}
+function ouvrirRoue(h,cx,cy){const g=stage.getBoundingClientRect(),R=Math.max(40,Math.min(70,g.width*.075)),m=R+26;
+  const x=Math.max(m,Math.min(g.width-m,cx-g.left)),y=Math.max(Math.min(m,g.height/2),Math.min(g.height-Math.min(m,g.height/2),cy-g.top));
+  roueEl.style.left=x+'px';roueEl.style.top=y+'px';roueEl.innerHTML='<div class="rc"></div>';roueEl.firstChild.textContent=h.name;
+  ROUE.forEach(([a,ic,lib],k)=>{const ang=-Math.PI/2+k*2*Math.PI/ROUE.length,b=document.createElement('button');
+    b.dataset.a=a;b.innerHTML='<span>'+ic+'</span>'+lib;b.style.animationDelay=(k*20)+'ms';
     b.style.left=Math.round(Math.cos(ang)*R)+'px';b.style.top=Math.round(Math.sin(ang)*R)+'px';
     b.addEventListener('click',e=>{e.stopPropagation();fermerRoue();choisirRoue(h,a)});roueEl.appendChild(b)});
   roueEl.style.display='block'}
+/* appui long sur écran tactile = clic droit */
+let appui=null,appuiFait=0;
+stage.addEventListener('pointerdown',e=>{clearTimeout(appui);if(e.pointerType==='mouse'||!HD)return;const ev={clientX:e.clientX,clientY:e.clientY};appui=setTimeout(()=>{if(busy||mode!=='play')return;const [px,py]=toScene(ev),h=hitSpot(px,py);if(h){ouvrirRoue(h,ev.clientX,ev.clientY);appuiFait=performance.now()}},450)});
+['pointerup','pointercancel','pointerleave'].forEach(n=>stage.addEventListener(n,()=>clearTimeout(appui)));
+stage.addEventListener('click',e=>{if(performance.now()-appuiFait<800){appuiFait=0;e.stopImmediatePropagation()}},true);
 function choisirRoue(h,a){if(busy||mode!=='play')return;verb=a;pending=null;renderInv();updVerbs();if(h.isCat)cat.freeze=true;run(async()=>{await walkTo(...h.w);await act(h,true)})}
 document.addEventListener('pointerdown',e=>{if(roueOuverte()&&!e.target.closest('#roue')){fermerRoue();e.stopPropagation();roueFermee=performance.now()}},true);
 stage.addEventListener('click',e=>{if(performance.now()-roueFermee<400)e.stopImmediatePropagation()},true);
@@ -112,6 +115,7 @@ async function act(h,right){
     if(c===1){await say('mag',"Tu as faim ?");return say('cat',"Miaou ! Miaou !")}
     if(c===2){await say('mag',"Tu as encore dormi sur mon pull ?");return say('cat',"Mrrrr.")}
     return say('mag',"Rien, laisse tomber.")}
+  if(verb==='parler'&&!PERSOS.includes(h.id))return say('mag',"Ça ne répond pas.");
   if(verb==='parler')return h.id==='matou'?say('matou',"Grrrr..."):say('cat',"Miaou ?");
   if(verb==='examiner')return say('mag',"C'est "+(/^[aeiouéè]/i.test(h.name)?"l'":"")+h.name+".");
   return say('mag',no());
