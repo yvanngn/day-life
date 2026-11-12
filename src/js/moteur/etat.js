@@ -1,5 +1,5 @@
 /* Canvas, état du jeu, sauvegarde, tâches et mots de passe */
-const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.imageSmoothingEnabled=false;
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.setTransform(2,0,0,2,0,0);ctx.imageSmoothingEnabled=false;
 const W=320,H=144,KEY='magali_dotl_save_v2';
 const $=id=>document.getElementById(id);
 const stage=$('stage'),speechEl=$('speech'),titleEl=$('title'),fadeEl=$('fade'),sentEl=$('sentence'),invEl=$('inv'),menuEl=$('menu'),menuBox=$('menuBox'),checkEl=$('check');
@@ -24,7 +24,7 @@ const CODES={
 const ROOMCODE={chambre:'REVEIL',couloir:'KIMONO',bain:'PACHA',salon:'CAFE'};
 const START={chambre:[205,130],couloir:[40,128],bain:[280,128],salon:[34,130]};
 
-let mode='menu',busy=false,verb=null,pending=null,hover='',bathing=false,skipFn=null,t=0,laserDot=null;
+let mode='menu',busy=false,verb=null,pending=null,hover='',bathing=false,skipFn=null,skipAll=false,t=0,laserDot=null;
 const P={face:1,x:205,y:130,tx:205,ty:130,walk:false,res:null};
 const cat={x:150,y:130,tx:150,mode:'walk',timer:0,face:1,freeze:false,chase:0};
 const mouse={x:80,flee:false};const mt={x:160,y:132,state:'sleep',face:-1};let vitreOpen=false,juggle=false;const cMouse={on:false,x:0};const barCat={x:104,y:78,jump:0};

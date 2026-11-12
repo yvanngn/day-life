@@ -94,3 +94,6 @@ body{background:radial-gradient(ellipse at top,#2a1a10 0%,var(--bg) 70%)}
 #menu h1.logo span{display:block;font-size:.55em}
 #menu .tagline{text-align:center;color:#ffd84a;letter-spacing:.2em;font-size:.85em;margin:0 0 14px;text-shadow:2px 2px 0 #000}
 #title{text-shadow:-2px 0 #000,2px 0 #000,0 -2px #000,0 2px #000,4px 4px 0 #6a2a00}
+
+#skipBtn{position:absolute;right:8px;bottom:8px;z-index:7;display:none;font-size:clamp(7px,1.3vw,11px);padding:7px 10px;background:var(--panel2);color:var(--verb);border:2px solid #000;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35);text-shadow:2px 2px 0 #000;cursor:pointer}
+#skipBtn:hover{background:var(--hi)}

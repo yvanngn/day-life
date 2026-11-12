@@ -1,8 +1,8 @@
 /* ---------- moteur ---------- */
 const wait=ms=>new Promise(res=>setTimeout(res,ms));
-function waitSkip(ms){return new Promise(res=>{const tm=setTimeout(done,ms);skipFn=done;function done(){clearTimeout(tm);skipFn=null;res()}})}
+function waitSkip(ms){if(skipAll)return Promise.resolve();return new Promise(res=>{const tm=setTimeout(done,ms);skipFn=done;function done(){clearTimeout(tm);skipFn=null;res()}})}
 let speech=null;
-function say(who,text){if(who==='cat'||who==='matou'){/!!!/.test(text)?SFX.angry():/^Mrrrr\.?$/.test(text)?SFX.purr():SFX.meow()}else if(who==='tv')SFX.tv();queued=null;return new Promise(res=>{speech={who,text,n:0};placeSpeech();let tm=null;
+function say(who,text){if(who==='cat'||who==='matou'){/!!!/.test(text)?SFX.angry():/^Mrrrr\.?$/.test(text)?SFX.purr():SFX.meow()}else if(who==='tv')SFX.tv();queued=null;if(skipAll)return Promise.resolve();return new Promise(res=>{speech={who,text,n:0};placeSpeech();let tm=null;
   const tick=setInterval(()=>{speech.n=Math.min(text.length,speech.n+2);placeSpeech();if(speech.n>=text.length)fini()},30);
   function fini(){clearInterval(tick);speech.n=text.length;placeSpeech();tm=setTimeout(done,Math.max(1200,text.length*45))}
   skipFn=()=>{if(speech&&speech.n<text.length){fini();return 'fini'}done()};
@@ -29,7 +29,7 @@ function placeSpeech(){if(!speech){speechEl.style.display='none';lastSp='';retur
 
 function walkTo(x,y){const R=ROOMS[S.room].walk;P.tx=Math.max(R[0],Math.min(R[1],x));P.ty=Math.max(R[2],Math.min(R[3],y));P.walk=true;
   return new Promise(res=>{if(P.res)P.res();P.res=res})}
-async function run(fn){busy=true;const before=JSON.stringify([S.room,S.inv,S.f]);const v=verb;try{await fn()}catch(e){console.error(e)}busy=false;cat.freeze=false;
+async function run(fn){busy=true;skipAll=false;const before=JSON.stringify([S.room,S.inv,S.f]);const v=verb;try{await fn()}catch(e){console.error(e)}busy=false;skipAll=false;cat.freeze=false;
   const failed=JSON.stringify([S.room,S.inv,S.f])===before;resetVerb();if(failed&&v&&mode==='play'){verb=v;updVerbs()}save();setTimeout(replayQueued,0)}
 async function fade(on){fadeEl.style.opacity=on?1:0;await wait(380)}
 async function go(room,x,y){SFX.door();await fade(true);if(S.room==='bain')S.f.scratch=false;S.room=room;roomMusic();P.x=P.tx=x;P.y=P.ty=y;P.walk=false;if(room==='couloir'){cat.x=150;cat.mode='walk'}save();await fade(false)}
@@ -79,3 +79,9 @@ async function act(h,right){
   return say('mag',no());
 }
 
+
+/* Bouton Passer : saute toute la scène en cours (dialogues, intro), comme dans Low Kanta */
+const skipBtn=$('skipBtn');
+function passer(e){if(e){e.stopPropagation();e.preventDefault()}if(!(busy||mode==='intro'))return;skipAll=true;if(skipFn)skipFn();if(skipFn)skipFn()}
+skipBtn.addEventListener('pointerdown',e=>e.stopPropagation());skipBtn.addEventListener('click',passer);
+setInterval(()=>{skipBtn.style.display=(mode==='intro'||(busy&&speech))?'block':'none'},150);
