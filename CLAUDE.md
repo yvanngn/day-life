@@ -53,7 +53,7 @@ Exception : si l'utilisateur écrit « force », exécuter quand même.
 1 Une matinée ordinaire (Magali) : chambre → couloir → salle de bain → salon. Codes : REVEIL, KIMONO, PACHA, CAFE.
 
 ## Interface (skill `interface-jeu`)
-- Clic gauche sur une cible sans verbe : `parler` pour les personnages (`PERSOS`), sinon `examiner`. Clic droit sur la scène : roue des verbes (`ouvrirRoue`, disque contrasté, nom en haut). Testé dans le groupe couloir.
+- Clic gauche sur une cible sans verbe : `parler` pour les personnages (`PERSOS`), sinon `examiner`. Clic droit sur la scène : roue des verbes en V2 seulement (`ouvrirRoue`, disque contrasté, nom en haut) ; en V1, clic droit = examiner directement. Contrôles expliqués par le narrateur à la fin de l'intro, selon la version. Testé dans le groupe couloir.
 - Clic droit : jamais le menu du navigateur dans le jeu (écouteur `contextmenu` sur `#app`, dans `src/js/moteur/moteur.js`), sauf dans les champs de saisie. Testé dans le groupe du menu.
 
 ## Graphismes V1 / V2 (paramètre « Graphismes » du menu)

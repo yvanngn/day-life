@@ -60,6 +60,7 @@ cv.addEventListener('mousemove',e=>{if(mode!=='play')return;const [px,py]=toScen
 cv.addEventListener('mouseleave',()=>{hover='';updSentence()});
 stage.addEventListener('contextmenu',e=>{e.preventDefault();onRight(e)});
 function onRight(e){if(skipFn){if(skipFn()==='fini')return;queued={clientX:e.clientX,clientY:e.clientY,right:true,t:performance.now()};return}if(busy||mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);if(!h)return;
+  if(!HD)return choisirRoue(h,'examiner'); // V1 : clic droit classique = examiner
   ouvrirRoue(h,e.clientX,e.clientY)}
 /* Roue des verbes (comme Un Noël au Vietnam) : clic gauche = parler ou examiner selon la cible, clic droit = roue */
 const PERSOS=['shaggy','matou','shaggyBar'];
