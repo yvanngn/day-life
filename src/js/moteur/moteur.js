@@ -2,7 +2,7 @@
 const wait=ms=>new Promise(res=>setTimeout(res,ms));
 function waitSkip(ms){if(skipAll)return Promise.resolve();return new Promise(res=>{const tm=setTimeout(done,ms);skipFn=done;function done(){clearTimeout(tm);skipFn=null;res()}})}
 let speech=null;
-function say(who,text){if(who==='cat'||who==='matou'){/!!!/.test(text)?SFX.angry():/^Mrrrr\.?$/.test(text)?SFX.purr():SFX.meow()}else if(who==='tv')SFX.tv();queued=null;if(skipAll)return Promise.resolve();return new Promise(res=>{speech={who,text,n:0};placeSpeech();let tm=null;
+function say(who,text){if(who==='cat'||who==='matou'){/!!!/.test(text)?SFX.angry():/^Mrrrr\.?$/.test(text)?SFX.purr():SFX.meow()}else if(who==='tv')SFX.tv();queued=null;lastSay={who:arguments[0],text:arguments[1]};if(skipAll)return Promise.resolve();return new Promise(res=>{speech={who,text,n:0};placeSpeech();let tm=null;
   const tick=setInterval(()=>{speech.n=Math.min(text.length,speech.n+2);placeSpeech();if(speech.n>=text.length)fini()},30);
   function fini(){clearInterval(tick);speech.n=text.length;placeSpeech();tm=setTimeout(done,Math.max(1200,text.length*45))}
   skipFn=()=>{if(speech&&speech.n<text.length){fini();return 'fini'}done()};
@@ -38,7 +38,7 @@ function spotsNow(){return ROOMS[S.room].spots().filter(h=>!h.vis||h.vis())}
 function hitSpot(px,py){const sp=spotsNow();for(let i=sp.length-1;i>=0;i--){const [x,y,w,h]=sp[i].r;if(px>=x&&px<x+w&&py>=y&&py<y+h)return sp[i]}return null}
 function toScene(e){const b=cv.getBoundingClientRect();return[(e.clientX-b.left)/b.width*W,(e.clientY-b.top)/b.height*H]}
 
-let queued=null;
+let queued=null,lastSay=null;
 function replayQueued(){if(!queued||busy||mode!=='play')return;const q=queued;queued=null;if(performance.now()-q.t<1500)(q.right?onRight:onLeft)(q)}
 stage.addEventListener('click',e=>onLeft(e));
 function onLeft(e){
@@ -60,7 +60,28 @@ cv.addEventListener('mousemove',e=>{if(mode!=='play')return;const [px,py]=toScen
 cv.addEventListener('mouseleave',()=>{hover='';updSentence()});
 stage.addEventListener('contextmenu',e=>{e.preventDefault();onRight(e)});
 function onRight(e){if(skipFn){if(skipFn()==='fini')return;queued={clientX:e.clientX,clientY:e.clientY,right:true,t:performance.now()};return}if(busy||mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);if(!h)return;
-  verb='examiner';pending=null;renderInv();updVerbs();if(h.isCat)cat.freeze=true;run(async()=>{await walkTo(...h.w);await act(h,true)})}
+  ouvrirRoue(h,e.clientX,e.clientY)}
+/* Roue des verbes (comme Un Noël au Vietnam) : clic gauche = parler ou examiner selon la cible, clic droit = roue */
+const PERSOS=['shaggy','matou','shaggyBar'];
+const ROUE_OBJ=[['ouvrir','🚪','Ouvrir'],['examiner','👁️','Examiner'],['prendre','✋','Prendre'],['utiliser','⚙️','Utiliser']];
+const ROUE_PERSO=[['parler','💬','Parler'],['examiner','👁️','Examiner'],['prendre','✋','Prendre'],['utiliser','⚙️','Utiliser']];
+const roueEl=$('roue');let roueFermee=0;
+roueEl.addEventListener('pointerdown',e=>e.stopPropagation());roueEl.addEventListener('click',e=>e.stopPropagation());roueEl.addEventListener('contextmenu',e=>{e.preventDefault();e.stopPropagation()});
+function roueOuverte(){return roueEl.style.display==='block'}
+function fermerRoue(){roueEl.style.display='none'}
+function ouvrirRoue(h,cx,cy){const g=stage.getBoundingClientRect(),R=Math.max(54,Math.min(84,g.width*.075)),m=R+40;
+  const x=Math.max(m,Math.min(g.width-m,cx-g.left)),y=Math.max(m+26,Math.min(g.height-m,cy-g.top));
+  roueEl.style.left=x+'px';roueEl.style.top=y+'px';roueEl.style.setProperty('--rr',(2*R+80)+'px');roueEl.style.setProperty('--rt',(-R-62)+'px');
+  roueEl.innerHTML='<div class="rtitre"></div>';roueEl.firstChild.textContent=h.name;
+  const opts=PERSOS.includes(h.id)?ROUE_PERSO:ROUE_OBJ;
+  opts.forEach(([a,ic,lib],k)=>{const ang=-Math.PI/2+k*2*Math.PI/opts.length,b=document.createElement('button');
+    b.className='rb';b.dataset.a=a;b.title=lib;b.innerHTML='<span>'+ic+'</span><i>'+lib+'</i>';
+    b.style.left=Math.round(Math.cos(ang)*R)+'px';b.style.top=Math.round(Math.sin(ang)*R)+'px';
+    b.addEventListener('click',e=>{e.stopPropagation();fermerRoue();choisirRoue(h,a)});roueEl.appendChild(b)});
+  roueEl.style.display='block'}
+function choisirRoue(h,a){if(busy||mode!=='play')return;verb=a;pending=null;renderInv();updVerbs();if(h.isCat)cat.freeze=true;run(async()=>{await walkTo(...h.w);await act(h,true)})}
+document.addEventListener('pointerdown',e=>{if(roueOuverte()&&!e.target.closest('#roue')){fermerRoue();e.stopPropagation();roueFermee=performance.now()}},true);
+stage.addEventListener('click',e=>{if(performance.now()-roueFermee<400)e.stopImmediatePropagation()},true);
 invEl.addEventListener('contextmenu',e=>e.preventDefault());
 // pas de menu du navigateur au clic droit, nulle part dans le jeu, sauf dans les champs de saisie (skill interface-jeu)
 document.getElementById('app').addEventListener('contextmenu',e=>{ if(!e.target.closest('input,textarea')) e.preventDefault(); });
@@ -72,9 +93,10 @@ async function act(h,right){
     if(pending==='chat'&&S.room==='salon')return say('mag',S.f.catWhite?"Je devrais le poser près de la souris.":"Il est bien trop sale pour le poser ici !");
     return say('mag',"Ça ne marche pas.")}
   if(h.exit&&!right)return h.exit();
-  if(!verb)return h.click?h.click():undefined;
+  if(!verb){if(h.click)return h.click();verb=PERSOS.includes(h.id)?'parler':'examiner'}
   if(dark)return say('mag',"Je n'y vois rien ! Il faudrait rallumer la bougie.");
   if(h[verb])return h[verb]();
+  if(verb==='parler')return h.id==='matou'?say('matou',"Grrrr..."):say('cat',"Miaou ?");
   if(verb==='examiner')return say('mag',"C'est "+(/^[aeiouéè]/i.test(h.name)?"l'":"")+h.name+".");
   return say('mag',no());
 }

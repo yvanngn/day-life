@@ -90,6 +90,18 @@ async def scenario_chambre(nav):
 async def scenario_couloir(nav):
     print('\n▶ Couloir')
     pg=await nouvelle_page(nav,'KIMONO'); E=pg.evaluate
+    await E("T.act(null,'shaggy')"); verif('Clic gauche sur Shaggy : parler',await E("lastSay&&lastSay.who==='cat'"),await E('lastSay'))
+    await E("T.act(null,'litiere')"); verif('Clic gauche sur un objet : examiner',await E("lastSay&&lastSay.who!=='cat'"),await E('lastSay'))
+    c=await E("(()=>{const h=T.spot('shaggy'),b=cv.getBoundingClientRect();return [b.left+(h.r[0]+h.r[2]/2)/W*b.width,b.top+(h.r[1]+h.r[3]/2)/H*b.height]})()")
+    await pg.mouse.click(c[0],c[1],button='right'); await pg.wait_for_timeout(200)
+    verif('Clic droit : roue avec le nom en haut et Parler',await E("roueOuverte()&&roueEl.querySelector('.rtitre').textContent==='Shaggy'&&!!roueEl.querySelector('[data-a=parler]')"))
+    await pg.click('#roue [data-a=examiner]'); await E('T.settle()')
+    verif('Roue : Examiner choisi',await E("!roueOuverte()&&S.f.catTalk>=1"),await E('S.f.catTalk'))
+    c=await E("(()=>{const h=T.spot('litiere'),b=cv.getBoundingClientRect();return [b.left+(h.r[0]+h.r[2]/2)/W*b.width,b.top+(h.r[1]+h.r[3]/2)/H*b.height]})()")
+    await pg.mouse.click(c[0],c[1],button='right'); await pg.wait_for_timeout(200)
+    verif('Roue d\'objet : Ouvrir sans Parler',await E("!!roueEl.querySelector('[data-a=ouvrir]')&&!roueEl.querySelector('[data-a=parler]')"))
+    await pg.mouse.click(5,5); verif('Clic ailleurs : roue fermée',await E("!roueOuverte()"))
+    await E("S.f.catTalk=0")
     await E("T.act('utiliser','shaggy','laser')"); verif('Laser sur Shaggy sans erreur',await E("!S.f.cat&&!busy"))
     await E("T.act('examiner','shaggy')"); verif('Shaggy examiné',await E("S.f.catTalk")==1)
     await E("T.act('prendre','shaggy')"); verif('Shaggy dans les bras',await E("S.inv.includes('chat')"))
