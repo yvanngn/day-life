@@ -14,12 +14,15 @@ function openMenu(){const inGame=mode==='play';const sv=loadSave();
    <h2>Mot de passe</h2>
    <div class="pw"><input id="pwIn" placeholder="CODE" maxlength="12"><button id="pwGo">Valider</button></div><div class="msg" id="pwMsg"></div>
    ${inGame?(()=>{const c=CODES[ROOMCODE[S.room]];return `<p>Code de la pièce actuelle : <b>${ROOMCODE[S.room]}</b><br><span class="note">Inventaire restauré : ${c.inv.length?c.inv.map(i=>ITEMS[i]).join(', '):'(rien)'}</span></p>`})():''}
+   <h2>Paramètres</h2>
+   <div class="btns"><button id="mHD">Graphismes : ${HD?'améliorés':'classiques'}</button></div>
    <p class="note">Version __VERSION__</p>
    <p class="note">La progression est sauvegardée automatiquement dans ce navigateur. Les codes servent de secours si la sauvegarde est effacée.</p>`;
   menuEl.style.display='flex';menuEl.scrollTop=0;
   const g=id=>document.getElementById(id);
   if(g('mRes'))g('mRes').onclick=closeMenu;
   if(g('mCont'))g('mCont').onclick=()=>{S=mergeState(sv);P.x=P.tx=S.x;P.y=P.ty=S.y;startPlay()};
+  g('mHD').onclick=()=>{setHD(!HD);g('mHD').textContent='Graphismes : '+(HD?'améliorés':'classiques')};
   g('mNew').onclick=()=>{S=defState();renderInv();closeMenu();intro()};
   const tryCode=()=>{const v=g('pwIn').value.trim().toUpperCase();if(applyCode(v)){startPlay();run(()=>say('narr',"Mot de passe accepté. Reprise : "+CODES[v].label+"."))}else g('pwMsg').textContent="Mot de passe inconnu."};
   g('pwGo').onclick=tryCode;g('pwIn').onkeydown=e=>{if(e.key==='Enter')tryCode()};

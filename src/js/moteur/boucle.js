@@ -24,13 +24,13 @@ function render(){
   if(laserDot){r(laserDot[0],laserDot[1],2,2,'#ff1010');glow(laserDot[0]+1,laserDot[1]+1,5,'rgba(255,0,0,.5)')}
   if(S.room==='chambre'&&S.f.dark){ctx.fillStyle='rgba(4,2,10,0.93)';ctx.fillRect(0,0,W,H);
     const fl=(t>>4)%2;glow(116,54,7+fl,'rgba(255,90,20,0.55)');r(116,53,1,2,fl?'#ff6020':'#ff9a40');r(116,52,1,1,'#ffd080')}
-  if(!(S.room==='chambre'&&S.f.dark))ambiance();
+  if(HD&&!(S.room==='chambre'&&S.f.dark))ambiance();
 }
 /* Upgrade graphique : ombres portées, lumière chaude et vignettage (esprit Low Kanta) */
-function ombre(x,y,w){ctx.fillStyle='rgba(0,0,0,.28)';ctx.beginPath();ctx.ellipse(x|0,(y|0)+1,w,3,0,0,7);ctx.fill()}
+function ombre(x,y,w){if(!HD)return;ctx.fillStyle='rgba(0,0,0,.28)';ctx.beginPath();ctx.ellipse(x|0,(y|0)+1,w,3,0,0,7);ctx.fill()}
 let _amb=null;
 function ambiance(){if(!_amb){const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
   let l=g.createLinearGradient(0,0,0,H);l.addColorStop(0,'rgba(255,200,120,.10)');l.addColorStop(.6,'rgba(255,170,90,0)');l.addColorStop(1,'rgba(40,10,30,.22)');g.fillStyle=l;g.fillRect(0,0,W,H);
   const v=g.createRadialGradient(W/2,H/2,H*.45,W/2,H/2,W*.62);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(10,4,0,.55)');g.fillStyle=v;g.fillRect(0,0,W,H);
-  g.fillStyle='rgba(0,0,0,.06)';for(let y=0;y<H;y+=2)g.fillRect(0,y,W,1);_amb=c}
+  _amb=c}
   ctx.drawImage(_amb,0,0)}
