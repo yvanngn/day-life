@@ -46,7 +46,7 @@ ROOMS.bain={walk:[14,300,116,140],draw:drawBain,spots:()=>[
   {id:'baignoire',name:'baignoire',r:[20,26,118,90],w:[80,124],wWith:[152,126],
    examiner:()=>say('mag',"Ma belle baignoire. Mon spa personnel."),ouvrir:()=>say('mag',"Si je veux un bain, autant l'utiliser."),prendre:()=>say('mag',"Elle est un peu lourde."),
    utiliser:async()=>{if(S.f.bath)return say('mag',"J'ai déjà pris mon bain. Je vais finir toute fripée.");
-     if(!S.inv.includes('robe'))return say('mag',"Il me faudrait de quoi m'habiller après... Ma robe bleue, dans l'armoire !");
+     if(!S.inv.includes('robe'))return say('mag',"J'ai besoin d'avoir de quoi m'habiller après.");
      cv.style.filter='blur(5px)';await wait(700);bathing=true;water(true);await wait(300);cv.style.filter='none';await wait(800);
      await say('tub',"♪ Dream on ! ♪");await say('tub',"♪ Mmmmh mmh mmmh... ♪");await say('tub',"♪ DREAM OOOOOOOON !!! ♪");await say('narr',"Les voisins apprécient moyennement.");
      cv.style.filter='blur(5px)';await wait(700);bathing=false;water(false);S.f.bath=true;S.f.dressed=true;removeItem('robe');await wait(300);cv.style.filter='none';await wait(600);
