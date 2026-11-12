@@ -57,15 +57,15 @@ button{font-family:inherit;cursor:pointer}
 @media (max-width:560px){#ui{grid-template-columns:1fr}}
 
 /* Curseur : croix fine, cadre qui pulse sur un objet (vert sur une sortie), icône de l'objet choisi */
-@media (hover:hover) and (pointer:fine){#stage{cursor:none}}
+@media (hover:hover) and (pointer:fine){#stage,body.hd #stage{cursor:none}}
 @media (hover:none),(pointer:coarse){#cur{display:none!important}}
 #cur{position:absolute;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;pointer-events:none;display:none;z-index:6}
 #cur b{position:absolute;left:11px;top:11px;width:4px;height:4px;background:#fff;box-shadow:0 0 0 1px #000,-8px 0 0 -1px #fff,8px 0 0 -1px #fff,0 -8px 0 -1px #fff,0 8px 0 -1px #fff}
-#cur i{position:absolute;width:8px;height:8px;border:3px solid var(--verbOn);display:none;filter:drop-shadow(1px 1px 0 #000)}
+#cur i{position:absolute;width:8px;height:8px;border:3px solid #ffd84a;display:none;filter:drop-shadow(1px 1px 0 #000)}
 #cur i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}#cur i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
 #cur i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}#cur i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
 #cur.hot i{display:block}#cur.hot{animation:curp .55s ease-in-out infinite alternate}
-#cur.hot b{background:var(--verbOn);box-shadow:0 0 0 1px #000}
+#cur.hot b{background:#ffd84a;box-shadow:0 0 0 1px #000}
 #cur.exit i{border-color:#7dff8a}#cur.exit b{background:#7dff8a}
 #cur canvas{position:absolute;left:20px;top:20px;width:22px;height:22px;image-rendering:pixelated;filter:drop-shadow(1px 1px 0 #000)}
 @keyframes curp{from{transform:scale(1)}to{transform:scale(1.4)}}
