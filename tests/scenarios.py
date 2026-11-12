@@ -44,6 +44,7 @@ async def scenario_menu(nav):
     print('\n▶ Menu, intro et mots de passe')
     pg=await nouvelle_page(nav); E=pg.evaluate
     verif('Menu affiché au lancement',await E("menuEl.style.display")=='flex')
+    verif('Clic droit : jamais le menu du navigateur',await E("(()=>{ const els=[...document.querySelectorAll('#app, #app button, #app div')].slice(0,60); return els.length>1&&els.every(el=>{ const e=new MouseEvent('contextmenu',{bubbles:true,cancelable:true}); el.dispatchEvent(e); return e.defaultPrevented; }); })()"))
     verif('Version affichée',await E("/Version \\d+\\.\\d+\\.\\d+/.test(menuBox.textContent)"))
     await pg.fill('#pwIn','faux'); await pg.press('#pwIn','Enter')
     verif('Mot de passe inconnu refusé',await E("document.getElementById('pwMsg').textContent")=='Mot de passe inconnu.')

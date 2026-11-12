@@ -51,3 +51,6 @@ Exception : si l'utilisateur écrit « force », exécuter quand même.
 
 ## Chapitres
 1 Une matinée ordinaire (Magali) : chambre → couloir → salle de bain → salon. Codes : REVEIL, KIMONO, PACHA, CAFE.
+
+## Interface (skill `interface-jeu`)
+- Clic droit : jamais le menu du navigateur dans le jeu (écouteur `contextmenu` sur `#app`, dans `src/js/moteur/moteur.js`), sauf dans les champs de saisie. Testé dans le groupe du menu.

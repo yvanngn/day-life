@@ -62,6 +62,8 @@ stage.addEventListener('contextmenu',e=>{e.preventDefault();onRight(e)});
 function onRight(e){if(skipFn){if(skipFn()==='fini')return;queued={clientX:e.clientX,clientY:e.clientY,right:true,t:performance.now()};return}if(busy||mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);if(!h)return;
   verb='examiner';pending=null;renderInv();updVerbs();if(h.isCat)cat.freeze=true;run(async()=>{await walkTo(...h.w);await act(h,true)})}
 invEl.addEventListener('contextmenu',e=>e.preventDefault());
+// pas de menu du navigateur au clic droit, nulle part dans le jeu, sauf dans les champs de saisie (skill interface-jeu)
+document.getElementById('app').addEventListener('contextmenu',e=>{ if(!e.target.closest('input,textarea')) e.preventDefault(); });
 
 async function act(h,right){
   const dark=S.room==='chambre'&&S.f.dark&&!['bougie','porte'].includes(h.id);
