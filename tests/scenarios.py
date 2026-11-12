@@ -90,7 +90,10 @@ async def scenario_chambre(nav):
 async def scenario_couloir(nav):
     print('\n▶ Couloir')
     pg=await nouvelle_page(nav,'KIMONO'); E=pg.evaluate
-    await E("T.act(null,'shaggy')"); verif('Clic gauche sur Shaggy : parler',await E("lastSay&&lastSay.who==='cat'"),await E('lastSay'))
+    await E("setHD(false)"); await E("T.act(null,'shaggy')"); verif('Clic gauche sur Shaggy : parler',await E("lastSay&&lastSay.who==='cat'"),await E('lastSay'))
+    await E("setHD(true)"); await E("void T.act(null,'shaggy')"); await pg.wait_for_selector('#choix button')
+    await pg.click('#choix button:nth-child(1)'); await E('T.settle()')
+    verif('V2 : parler à Shaggy propose un choix',await E("lastSay&&lastSay.who==='cat'&&lastSay.text==='Miaou ! Miaou !'"),await E('lastSay'))
     await E("T.act(null,'litiere')"); verif('Clic gauche sur un objet : examiner',await E("lastSay&&lastSay.who!=='cat'"),await E('lastSay'))
     c=await E("(()=>{const h=T.spot('shaggy'),b=cv.getBoundingClientRect();return [b.left+(h.r[0]+h.r[2]/2)/W*b.width,b.top+(h.r[1]+h.r[3]/2)/H*b.height]})()")
     await pg.mouse.click(c[0],c[1],button='right'); await pg.wait_for_timeout(200)

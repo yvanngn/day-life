@@ -107,6 +107,11 @@ async function act(h,right){
   if(!verb){if(h.click)return h.click();verb=PERSOS.includes(h.id)?'parler':'examiner'}
   if(dark)return say('mag',"Je n'y vois rien ! Il faudrait rallumer la bougie.");
   if(h[verb])return h[verb]();
+  if(verb==='parler'&&h.id==='shaggy'&&HD){ // V2 : petit dialogue à choix
+    const c=await choose([["Tu as faim ?",1],["Tu as encore dormi sur mon pull ?",2],["Rien, laisse tomber.",0]]);
+    if(c===1){await say('mag',"Tu as faim ?");return say('cat',"Miaou ! Miaou !")}
+    if(c===2){await say('mag',"Tu as encore dormi sur mon pull ?");return say('cat',"Mrrrr.")}
+    return say('mag',"Rien, laisse tomber.")}
   if(verb==='parler')return h.id==='matou'?say('matou',"Grrrr..."):say('cat',"Miaou ?");
   if(verb==='examiner')return say('mag',"C'est "+(/^[aeiouéè]/i.test(h.name)?"l'":"")+h.name+".");
   return say('mag',no());
