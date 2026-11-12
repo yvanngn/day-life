@@ -23,7 +23,7 @@ function sideRows(step){const dressed=S.f.dressed;const top=dressed?MAG_SIDE_TOP
 /* Magali haute définition : tête et buste dessinés à 24×32, jambes doublées depuis les anciennes lignes */
 const MAG_HD=["........HHHHHHHH........", "......HHhhhhhhHHHH......", ".....HHhhHHHHHHhHHH.....", "....HHhHHHHHHHHHHgHH....", "....HhHHHHHHHHHHHHgHH...", "...HHHHSSSSSSSHHHHHHH...", "...HHHSSSSSSSSSSSSHHHH..", "...HHSLLLLSSSSLLLLSSHH..", "...HHSSSSSSSSSSSSSSSHH..", "...HHSWEeWSSSSWEeWSSHH..", "...HHSSEESSSSSSEESSSHH..", "...HHSSSSSSssSSSSSSSHH..", "...HHSRRSSSSsSSSSRRSHH..", "..HHHSRRSSSSSSSSSRRSHHH.", "..HHHSSSSSSSSSSMSSSSHHH.", "..HHHHSSSSMMMMMSSSSHHHH.", "..HHHHHSSSSSSSSSSSHHHHH.", "..HHHHHHsSSSSSSSsHHHHHH.", "..HHHHHHHHSSSSSHHHHHHHH.", ".HHHHHHHHHSSSSSHHHHHHHHH", ".HHHHHHHHHSSSSHHHHHHHHHH", ".HHHHKKKKKKKKKKKKKKHHHHH", ".HHKKKKKKKKKKKKKKKKKKHH.", ".HSKKKKKKKKKKKKKKKKKKSH.", ".HSKKKkKKKKKKKKKKkKKKSH.", ".SSKKKkKKKKKKKKKKkKKKSS.", ".SSKKKKKKKKKKKKKKKKKKSS.", ".SSKKKKKKKKKKKKKKKKKKSS.", "..SKKKKKKKKKKKKKKKKKKS..", "..SKKKKKKKKKKKKKKKKKKS..", "..sSKKKKKKKKKKKKKKKKSs..", "...KKKKKKKKKKKKKKKKKK..."];
 const dbl=rows=>rows.flatMap(r=>{const x=r.replace(/./g,c=>c+c);return[x,x]});
-function magHD(step,side){const old=side?sideRows(step):magRows(step);let top=MAG_HD;
+function magHD(step,side){const old=side?sideRows(step):magRows(step);if(side)return dbl(old);let top=MAG_HD;
   if(S.f.dressed)top=top.map((r,i)=>i>=21?r.replace(/K/g,'D').replace(/k/g,'d'):r);
   return top.concat(dbl(old.slice(16)))}
 function drawMag(x,y,s=2,step=0,side=0){const rows=magHD(step,side);const w=12*s,h=rows.length*s/2;const ox=Math.round(x-w/2),oy=Math.round(y-h);
