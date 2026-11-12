@@ -91,6 +91,9 @@ async def scenario_couloir(nav):
     print('\n▶ Couloir')
     pg=await nouvelle_page(nav,'KIMONO'); E=pg.evaluate
     await E("setHD(false)"); await E("T.act(null,'shaggy')"); verif('Clic gauche sur Shaggy : parler',await E("lastSay&&lastSay.who==='cat'"),await E('lastSay'))
+    await E("setHD(true);const t=window.T;window.T=null;void tuto();window.T=t"); verif('V2 : tuto en cartes',await E("$('tuto').style.display==='flex'&&$('tuto').textContent.includes('1/4')"))
+    for _ in range(4): await pg.click('#tuto')
+    verif('Tuto fermé après 4 cartes',await E("$('tuto').style.display==='none'"))
     await E("setHD(true)"); await E("void T.act(null,'shaggy')"); await pg.wait_for_selector('#choix button')
     await pg.click('#choix button:nth-child(1)'); await E('T.settle()')
     verif('V2 : parler à Shaggy propose un choix',await E("lastSay&&lastSay.who==='cat'&&lastSay.text==='Miaou ! Miaou !'"),await E('lastSay'))

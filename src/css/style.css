@@ -4,7 +4,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Press Start 2P',monospace}
 #app{position:relative;max-width:1280px;margin:0 auto;padding:12px 16px;user-select:none;-webkit-user-select:none;min-height:520px}
-#stage{position:relative;width:100%;overflow:hidden;background:#000;border:3px solid var(--line);border-bottom:none;cursor:crosshair}
+#stage{position:relative;width:100%;overflow:hidden;background:#000;border:3px solid var(--line);border-bottom:none;cursor:default}
 #cv{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;transition:filter .6s}
 #stage.shake{animation:shake .35s linear 2}
 @keyframes shake{0%,100%{transform:translate(0,0)}25%{transform:translate(-6px,3px)}50%{transform:translate(5px,-3px)}75%{transform:translate(-3px,-2px)}}
@@ -72,7 +72,7 @@ button{font-family:inherit;cursor:pointer}
 
 /* ---- Upgrade graphique (esprit Low Kanta), actif avec body.hd ---- */
 body.hd{--bg:#0b0a14;--panel:#1a120c;--panel2:#8a3a14;--line:#f0b23c;--verb:#f7ecd6;--verbOn:#ffd84a;--text:#f7ecd6;--hi:#b4501f;--jade:#7fc98f;--narr:#ffd83a;--mag:#ffffff;--cat:#ffa64a;--tv:#9cff9c}
-body.hd #stage{position:relative;width:100%;overflow:hidden;background:#000;border:4px solid #000;outline:3px solid var(--line);outline-offset:-7px;box-shadow:0 0 30px rgba(240,140,40,.25);cursor:crosshair}
+body.hd #stage{position:relative;width:100%;overflow:hidden;background:#000;border:4px solid #000;outline:3px solid var(--line);outline-offset:-7px;box-shadow:0 0 30px rgba(240,140,40,.25)}
 body.hd{background:radial-gradient(ellipse at top,#2a1a10 0%,var(--bg) 70%)}
 body.hd #speech{border-radius:4px;background:rgba(10,5,2,.72);border-width:2px;text-shadow:-2px 0 #000,2px 0 #000,0 -2px #000,0 2px #000,3px 3px 0 #000}
 body.hd #sentence{background:linear-gradient(#2b1d12,#140a07);border:0;border-top:4px solid var(--line);color:var(--jade);text-shadow:2px 2px 0 #000;outline:none}
@@ -130,3 +130,10 @@ body.hd #choix{border-radius:10px;border-width:2px;background:rgba(14,10,26,.92)
 #choix button{display:block;width:100%;text-align:left;margin:4px 0;font:inherit;font-size:clamp(11px,2vw,18px);color:#fff8e8;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.25);padding:.35em .7em;cursor:pointer}
 body.hd #choix button{border-radius:8px}
 #choix button:hover{background:rgba(255,215,120,.2)}
+
+/* V2 : tuto en cartes au début du jeu (comme Low Kanta) */
+#tuto{position:absolute;inset:0;z-index:25;display:none;align-items:center;justify-content:center;background:rgba(8,5,3,.72);cursor:pointer}
+#tuto .tbox{width:min(80%,660px);background:linear-gradient(#2b1d12,#1a120c);border:3px solid #f0b23c;box-shadow:0 0 0 3px #000,6px 6px 0 #000;padding:1em 1.2em;font-size:clamp(9px,1.6vw,17px);line-height:1.5;text-align:left;color:#fff8e8;animation:pop .2s ease-out}
+#tuto .tt{color:#f0b23c;margin:0 0 .7em}#tuto p{margin:.2em 0}#tuto .tp{color:#7ad8a8;font-size:.75em;margin-top:.9em;text-align:right}
+#tuto .demo{display:flex;gap:.4em;flex-wrap:wrap;margin:.5em 0}
+#tuto .demo span{background:#7a2a2a;border:2px solid #000;border-radius:50%;width:2.2em;height:2.2em;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px rgba(240,178,60,.7)}
