@@ -1,5 +1,5 @@
 /* Canvas, état du jeu, sauvegarde, tâches et mots de passe */
-const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.setTransform(2,0,0,2,0,0);ctx.imageSmoothingEnabled=false;
+const cv=document.getElementById('cv');let ctx=cv.getContext('2d');ctx.setTransform(2,0,0,2,0,0);ctx.imageSmoothingEnabled=false;
 const W=320,H=144,KEY='magali_dotl_save_v2';
 const $=id=>document.getElementById(id);
 const stage=$('stage'),speechEl=$('speech'),titleEl=$('title'),fadeEl=$('fade'),sentEl=$('sentence'),invEl=$('inv'),menuEl=$('menu'),menuBox=$('menuBox'),checkEl=$('check');

@@ -22,8 +22,12 @@ function sideRows(step){const dressed=S.f.dressed;const top=dressed?MAG_SIDE_TOP
   return top.concat(bot)}
 /* Magali haute définition : tête et buste dessinés à 24×32, jambes doublées depuis les anciennes lignes */
 const MAG_HD=["........HHHHHHHH........", "......HHhhhhhhHHHH......", ".....HHhhHHHHHHhHHH.....", "....HHhHHHHHHHHHHgHH....", "....HhHHHHHHHHHHHHgHH...", "...HHHHSSSSSSSHHHHHHH...", "...HHHSSSSSSSSSSSSHHHH..", "...HHSLLLLSSSSLLLLSSHH..", "...HHSSSSSSSSSSSSSSSHH..", "...HHSWEeWSSSSWEeWSSHH..", "...HHSSEESSSSSSEESSSHH..", "...HHSSSSSSssSSSSSSSHH..", "...HHSRRSSSSsSSSSRRSHH..", "..HHHSRRSSSSSSSSSRRSHHH.", "..HHHSSSSSSSSSSMSSSSHHH.", "..HHHHSSSSMMMMMSSSSHHHH.", "..HHHHHSSSSSSSSSSSHHHHH.", "..HHHHHHsSSSSSSSsHHHHHH.", "..HHHHHHHHSSSSSHHHHHHHH.", ".HHHHHHHHHSSSSSHHHHHHHHH", ".HHHHHHHHHSSSSHHHHHHHHHH", ".HHHHKKKKKKKKKKKKKKHHHHH", ".HHKKKKKKKKKKKKKKKKKKHH.", ".HSKKKKKKKKKKKKKKKKKKSH.", ".HSKKKkKKKKKKKKKKkKKKSH.", ".SSKKKkKKKKKKKKKKkKKKSS.", ".SSKKKKKKKKKKKKKKKKKKSS.", ".SSKKKKKKKKKKKKKKKKKKSS.", "..SKKKKKKKKKKKKKKKKKKS..", "..SKKKKKKKKKKKKKKKKKKS..", "..sSKKKKKKKKKKKKKKKKSs..", "...KKKKKKKKKKKKKKKKKK..."];
+/* Magali de profil, tête et buste redessinés à la main (24×32) */
+const MAG_SIDE_HD=["........HHHHHHHH........", "......HHhhhhhhhHHH......", ".....HHhhHHHHHHhhHH.....", "....HHhHHHHHHHHHHhHH....", "....HhHHHHHHHHHHHHSHH...", "...HHHHHHHHHHHSSSSSHH...", "...HHHHHHHHHSSSSSSSSH...", "...HHHHHHHHSSSSLLLLSS...", "...HHHHHHHSSSSSSSSSSS...", "...HHHHHHHSSSSSWEeWSS...", "...HHHHHHHSSSSSSEESSSS..", "...HHHHHHHSsSSSSSSSSSS..", "...HHHHHHHSSSSRRSSSsSS..", "...HHHHHHHHSSSRRSSSSS...", "...HHHHHHHHSSSSSSSMSS...", "...HHHHHHHHHSSSSMMMS....", "...HHHHHHHHHSSSSSSS.....", "...HHHHHHHHHHsSSSS......", "...HHHHHHHHHHSSSS.......", "....HHHHHHHHSSSS........", "....HHHHHHHHSSSS........", "....HHHHKKKKKKKKKKKK....", "....HHHKKKKKKKKKKKKK....", "....HHKKKKKKKKKKKKKKK...", "....HKKKKKKSSKKKKKKKK...", "....KKKKKKKSSKKKKKKK....", "....KKKKKKSSSKKKKKKK....", "....KKKKKKSSKKKKKKKK....", "....KKKKKKSSKKKKKKKK....", "....KKKKKkSSKKKKKKKK....", "....KKKKKKSsKKKKKKKK....", "....KKKKKKKKKKKKKKKK...."];
+/* Shaggy debout, redessiné à la main (28×16) */
+const CAT_W_HD=["......................OO..OO", ".....................OOOOOOO", "OO..................OOkWOOkW", "OO..................OOOOOPOO", "..O.OOOOOOOOOOOOOOOOOOOOOOO.", "..OOOOOOOOOOOOOOOOOOOOOOOO..", "..OOOoOOoOOoOOoOOOOOOOOOO...", "...OOoOOoOOoOOoOOOOOOOOO....", "...OOOOOOOOOOOOOOOOOOOOO....", "....OOOOOOOOOOOOOOOOOOOO....", "....OOOOOOOOOOOOOOOOOOO.....", "....OOOO.OOOO....OOOO.OOOO..", "....OOOO.OOOO....OOOO.OOOO..", "....OOOO.OOOO....OOOO.OOOO..", "....WWWW.WWWW....WWWW.WWWW..", "....WWWW.WWWW....WWWW.WWWW.."];
 const dbl=rows=>rows.flatMap(r=>{const x=r.replace(/./g,c=>c+c);return[x,x]});
-function magHD(step,side){const old=side?sideRows(step):magRows(step);if(side)return dbl(old);let top=MAG_HD;
+function magHD(step,side){const old=side?sideRows(step):magRows(step);let top=side?MAG_SIDE_HD:MAG_HD;
   if(S.f.dressed)top=top.map((r,i)=>i>=21?r.replace(/K/g,'D').replace(/k/g,'d'):r);
   return top.concat(dbl(old.slice(16)))}
 function drawMag(x,y,s=2,step=0,side=0){const rows=HD?magHD(step,side):(side?sideRows(step):magRows(step));const k=HD?2:1;const w=12*s,h=rows.length*s/k;const ox=Math.round(x-w/2),oy=Math.round(y-h);
@@ -49,7 +53,18 @@ function bonnet(ox,oy,s,side){const red='#d01828',dk='#9a0c18',W='#f6f6f6';
 /* ---- V2 : aides haute définition ---- */
 const rh=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(x,y,w,h)};
 /* chat V2 : doublé, reflet dans l'œil, ventre et rayures nuancés */
-function catHD(rows){return dbl(rows).map((l,i)=>i===5||i===11?l.replace(/kk/g,'kW'):i===9?l.replace(/oo/g,'oO'):i===7||i===8?l.replace(/OOOO/g,'OOoO'):l)}
+function catHD(rows){if(rows===CAT_W)return CAT_W_HD;return dbl(rows).map((l,i)=>i===5||i===11?l.replace(/kk/g,'kW'):i===9?l.replace(/oo/g,'oO'):i===7||i===8?l.replace(/OOOO/g,'OOoO'):l)}
 function drawCatRows(rows,pal,x,y,flip){HD?drawMap(catHD(rows),pal,x,y,1,flip):drawMap(rows,pal,x,y,2,flip)}
 /* souris V2 (salon : dy=0, couloir : dy=26) */
 function mouseHD(mx,dy,b){rh(mx-6,dy+73.5-b,7,3.5,'#8a8a90');rh(mx-5.5,dy+73-b,5,1,'#9a9aa4');rh(mx-5,dy+76-b,5,.5,'#6a6a72');rh(mx+1,dy+74-b,3,2.5,'#9a9aa0');rh(mx+3.5,dy+75-b,1,1,'#b0b0b8');rh(mx,dy+72-b,2,2,'#d08a9a');rh(mx+.5,dy+72.5-b,1,1,'#f0b0c0');rh(mx+2.5,dy+74.5-b,1,1,'#111');rh(mx+2.5,dy+74.5-b,.5,.5,'#fff');rh(mx+4,dy+75.5-b,.5,.5,'#ff9ab0');rh(mx+3,dy+76-b,2.5,.5,'#ddd');rh(mx-9.5,dy+75.5,3.5,.5,'#d08a9a');rh(mx-11,dy+75,1.5,.5,'#d08a9a');rh(mx-4,dy+77-b,1,.5,'#d08a9a');rh(mx-1,dy+77-b,1,.5,'#d08a9a')}
+
+/* ---------- V2 : personnages avec contour sombre et lumière douce (calque hors écran, comme Low Kanta) ---------- */
+const SPR=document.createElement('canvas'),SPO=document.createElement('canvas');SPR.width=SPO.width=640;SPR.height=SPO.height=288;
+const sg=SPR.getContext('2d'),so=SPO.getContext('2d');sg.imageSmoothingEnabled=so.imageSmoothingEnabled=false;
+function contour(f){return function(...a){if(!HD)return f(...a);const dst=ctx,T=dst.getTransform();
+  sg.setTransform(1,0,0,1,0,0);sg.globalCompositeOperation='source-over';sg.clearRect(0,0,640,288);sg.setTransform(T);sg.globalAlpha=dst.globalAlpha;ctx=sg;let res;try{res=f(...a)}finally{ctx=dst}
+  sg.setTransform(1,0,0,1,0,0);sg.globalAlpha=1;sg.globalCompositeOperation='source-atop';const g=sg.createLinearGradient(0,0,0,288);g.addColorStop(0,'rgba(255,236,190,.14)');g.addColorStop(1,'rgba(40,10,50,.20)');sg.fillStyle=g;sg.fillRect(0,0,640,288);sg.globalCompositeOperation='source-over';
+  so.setTransform(1,0,0,1,0,0);so.globalCompositeOperation='source-over';so.clearRect(0,0,640,288);[[1,0],[-1,0],[0,1],[0,-1]].forEach(([x,y])=>so.drawImage(SPR,x,y));
+  so.globalCompositeOperation='source-in';so.fillStyle='#120804';so.fillRect(0,0,640,288);so.globalCompositeOperation='source-over';so.drawImage(SPR,0,0);
+  dst.save();dst.setTransform(1,0,0,1,0,0);dst.drawImage(SPO,0,0);dst.restore();return res}}
+drawMag=contour(drawMag);drawCatRows=contour(drawCatRows);mouseHD=contour(mouseHD);
