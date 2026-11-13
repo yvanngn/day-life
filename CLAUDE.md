@@ -53,7 +53,7 @@ Exception : si l'utilisateur écrit « force », exécuter quand même.
 1 Une matinée ordinaire (Magali) : chambre → couloir → salle de bain → salon. Codes : REVEIL, KIMONO, PACHA, CAFE.
 
 ## Interface (skill `interface-jeu`)
-- Clic gauche sur une cible sans verbe : `parler` pour les personnages (`PERSOS`), sinon `examiner`. Clic droit sur la scène : roue des verbes en V2 seulement (`ouvrirRoue`, disque contrasté, nom en haut) ; en V1, clic droit = examiner directement. Contrôles expliqués à la fin de l'intro : V1 par le narrateur, V2 par le tuto en cartes (`tuto()`, `TUTO` dans intro.js, comme Low Kanta). Testé dans le groupe couloir.
+- Clic gauche sur une cible sans verbe : `parler` pour les personnages (`PERSOS`), sinon `examiner`. V2 (par défaut) : pas de boutons de verbes, roue des actions de Low Kanta au clic droit ou appui long (`ouvrirRoue`), clic gauche sur un objet d’inventaire = le prendre en main, clic droit = l’examiner, inventaire sur toute la largeur. V1 (menu « Graphismes : classiques ») : boutons de verbes, ancien design, clic droit = examiner. Contrôles expliqués à la fin de l'intro : V1 par le narrateur, V2 par le tuto en cartes (`tuto()`, `TUTO` dans intro.js, comme Low Kanta). Testé dans le groupe couloir.
 - Clic droit : jamais le menu du navigateur dans le jeu (écouteur `contextmenu` sur `#app`, dans `src/js/moteur/moteur.js`), sauf dans les champs de saisie. Testé dans le groupe du menu.
 
 ## Graphismes V1 / V2 (paramètre « Graphismes » du menu)

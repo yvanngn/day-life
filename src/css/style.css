@@ -137,3 +137,11 @@ body.hd #choix button{border-radius:8px}
 #roue button:hover,#roue button:focus-visible{background:var(--rg);color:#2a160f;text-shadow:none;outline:none}
 @keyframes rouep{from{transform:translate(-50%,-50%) scale(.2);opacity:0}}
 @media (prefers-reduced-motion:reduce){#roue button{animation:none}}
+/* V2 : pas de verbes (roue au clic droit), inventaire en grand sur toute la largeur */
+body.hd #verbs{display:none}
+body.hd #left,body.hd #right{display:contents}
+body.hd #ui{grid-template-columns:1fr auto auto;grid-template-rows:1fr 1fr;gap:6px 8px;align-items:stretch}
+body.hd #inv{grid-column:1;grid-row:1/3;align-self:center}
+body.hd #checkBtn{grid-column:2;grid-row:1;margin:0}body.hd #aideBtn{grid-column:2;grid-row:2;margin:0}
+body.hd #menuBtn{grid-column:3;grid-row:1}body.hd #sndBtn{grid-column:3;grid-row:2}
+@media (max-width:560px){body.hd #ui{grid-template-columns:1fr 1fr}body.hd #inv{grid-column:1/3;grid-row:1}body.hd #checkBtn{grid-column:1;grid-row:2}body.hd #aideBtn{grid-column:2;grid-row:2}body.hd #menuBtn{grid-column:1;grid-row:3}body.hd #sndBtn{grid-column:2;grid-row:3}}

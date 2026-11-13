@@ -9,6 +9,7 @@ function renderInv(){invEl.innerHTML='';for(let i=0;i<6;i++){const d=document.cr
 function clickItem(id){if(busy||mode!=='play')return;
   if(S.f.used[id]&&verb!=='examiner')return run(()=>say('mag',id==='chat'?"Shaggy a fini sa mission. Il dort.":"Je n'en ai plus besoin."));
   if(pending){if(pending===id)return;run(()=>say('mag',"Je ne vois pas comment combiner ça."));return}
+  if(HD&&!verb)verb='utiliser'; // V2 sans verbes : clic gauche = prendre en main
   if(verb==='utiliser'){pending=id;renderInv();updSentence();return}
   if(verb==='examiner')return run(()=>say('mag',id==='chat'?(S.f.catWhite?"Shaggy, tout blanc et tout propre.":"Shaggy ronronne dans mes bras. Pour l'instant."):ITEMEX[id]));
   if(verb==='prendre')return run(()=>say('mag',"Je l'ai déjà."));
