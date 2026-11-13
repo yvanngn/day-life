@@ -92,7 +92,7 @@ function ouvrirRoue(h,cx,cy){const g=stage.getBoundingClientRect(),R=Math.max(40
 let appui=null,appuiFait=0;
 stage.addEventListener('pointerdown',e=>{clearTimeout(appui);if(e.pointerType==='mouse'||!HD)return;const ev={clientX:e.clientX,clientY:e.clientY};appui=setTimeout(()=>{if(busy||mode!=='play')return;const [px,py]=toScene(ev),h=hitSpot(px,py);if(h){ouvrirRoue(h,ev.clientX,ev.clientY);appuiFait=performance.now()}},450)});
 ['pointerup','pointercancel','pointerleave'].forEach(n=>stage.addEventListener(n,()=>clearTimeout(appui)));
-stage.addEventListener('click',e=>{if(performance.now()-appuiFait<800){appuiFait=0;e.stopImmediatePropagation()}},true);
+stage.addEventListener('click',e=>{if(appuiFait&&performance.now()-appuiFait<800){appuiFait=0;e.stopImmediatePropagation()}},true);
 function choisirRoue(h,a){if(busy||mode!=='play')return;verb=a;pending=null;renderInv();updVerbs();if(h.isCat)cat.freeze=true;run(async()=>{await walkTo(...h.w);await act(h,true)})}
 document.addEventListener('pointerdown',e=>{if(roueOuverte()&&!e.target.closest('#roue')){fermerRoue();e.stopPropagation();roueFermee=performance.now()}},true);
 stage.addEventListener('click',e=>{if(performance.now()-roueFermee<400)e.stopImmediatePropagation()},true);
