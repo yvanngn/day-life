@@ -1,6 +1,6 @@
 /* ---------- boucle ---------- */
 function update(){t++;
-  if(P.walk){const dx=P.tx-P.x,dy=P.ty-P.y,d=Math.hypot(dx,dy);if(d<1.2){P.x=P.tx;P.y=P.ty;P.walk=false;if(P.res){const f=P.res;P.res=null;f()}}else{P.x+=dx/d*2;P.y+=dy/d*1.4;if(Math.abs(dx)>0.5)P.face=dx>0?1:-1}}
+  if(P.walk){const dx=P.tx-P.x,dy=P.ty-P.y,d=Math.hypot(dx,dy);if(d<1.2){P.x=P.tx;P.y=P.ty;P.walk=false;if(P.res){const f=P.res;P.res=null;f()}}else{P.x+=dx/d*2.4;P.y+=dy/d*1.7;if(Math.abs(dx)>0.5)P.face=dx>0?1:-1}}
   if(mode==='play'&&S.room==='couloir'&&!S.f.cat&&!cat.freeze){
    if(cat.mode==='walk'||cat.mode==='chase'){const sp=cat.mode==='chase'?3:0.4;const dx=cat.tx-cat.x;
      if(Math.abs(dx)<2){if(cat.mode==='chase')cat.tx=60+Math.random()*170;else{const r0=Math.random();if(r0<.45){cat.mode='lick';cat.timer=160+Math.random()*200}else if(r0<.6){cat.mode='sit';cat.timer=100}else cat.tx=60+Math.random()*170}}
