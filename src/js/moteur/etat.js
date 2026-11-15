@@ -27,7 +27,7 @@ const START={chambre:[205,130],couloir:[40,128],bain:[280,128],salon:[34,130]};
 let mode='menu',busy=false,verb=null,pending=null,hover='',bathing=false,skipFn=null,skipAll=false,nextVerb=null,t=0,laserDot=null;
 const P={face:1,x:205,y:130,tx:205,ty:130,walk:false,res:null};
 const cat={x:150,y:130,tx:150,mode:'walk',timer:0,face:1,freeze:false,chase:0};
-const mouse={x:80,flee:false};const mt={x:160,y:132,state:'sleep',face:-1};let vitreOpen=false,juggle=false;const cMouse={on:false,x:0};const barCat={x:104,y:78,jump:0};
+const mouse={x:80,flee:false};const mt={x:160,y:132,state:'sleep',face:-1};let vitreOpen=false,juggle=false,cafeAnim=null;const cMouse={on:false,x:0};const barCat={x:104,y:78,jump:0};
 
 
 /* Option graphismes : améliorés (défaut) ou classiques, pour comparer avant/après */

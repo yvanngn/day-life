@@ -18,7 +18,7 @@ function render(){
   const showCat=S.room==='couloir'&&!S.f.cat;
   const step=P.walk?1+((t>>3)%2):0;
   const drawP=()=>{if(!bathing){ombre(P.x,P.y,13);drawMag(P.x,P.y,2,step,P.walk?P.face:0)}
-    if(juggle)for(let i=0;i<3;i++){const a=t/9+i*2.09;r(P.x+Math.cos(a)*12-2,P.y-66+Math.sin(a)*8-Math.abs(Math.cos(a))*6,4,4,'#ff8a1a')}};
+    if(juggle)drawJongle(t);if(cafeAnim)drawCafe(t)};
   if(showCat)ombre(cat.x,cat.y,11);
   if(showCat&&cat.y<P.y){drawCat();drawP()}else{drawP();if(showCat)drawCat()}
   if(laserDot){r(laserDot[0],laserDot[1],2,2,'#ff1010');glow(laserDot[0]+1,laserDot[1]+1,5,'rgba(255,0,0,.5)')}
@@ -34,3 +34,16 @@ function ambiance(){if(!_amb){const c=document.createElement('canvas');c.width=W
   const v=g.createRadialGradient(W/2,H/2,H*.45,W/2,H/2,W*.62);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(10,4,0,.55)');g.fillStyle=v;g.fillRect(0,0,W,H);
   _amb=c}
   ctx.drawImage(_amb,0,0)}
+
+/* Jonglage : cascade à trois clémentines, mains qui montent et descendent */
+const PEAU='#f0c49c';
+function clem(x,y,rot){const R=HD?rh:r;R(x-2,y-1.5,4,3,'#e8650c');R(x-1.5,y-2,3,4,'#e8650c');R(x-1.5,y-1.5,3,3,'#ff8a1a');if(HD){rh(x-1,y-1.5,1,1,'#ffc070');rh(x+.5,y+1,1.5,.5,'#b84a06')}R(x-.5+rot,y-2.5,1,1,'#3c9a3c')}
+function drawJongle(t){const T=54,hy=P.y-31,xs=[P.x-9,P.x+9];
+  for(let k=0;k<2;k++){const b=Math.sin((t/T*2+k)*Math.PI)*2;r(xs[k]-1,hy-3+b,3,5,PEAU);r(xs[k]-1.5,hy+b-4,4,2,PEAU)}
+  for(let i=0;i<3;i++){const ph=((t/T)+i/3)%1,half=ph<.5,q=(half?ph:ph-.5)*2,a=half?0:1,x=xs[a]+(xs[1-a]-xs[a])*q,y=hy-4-Math.sin(q*Math.PI)*(half?48:40);clem(x,y,(i+(t>>3))%2?.5:-.5)}}
+/* Café : tasse en main, portée aux lèvres, vapeur */
+function drawCafe(t){const e=(performance.now()-cafeAnim.t0)/1000,f=P.face||-1;let lev=0;
+  if(e>0.5&&e<3.9){const s=((e-0.5)%1.15)/1.15;lev=s<.25?s*4:s<.65?1:Math.max(0,1-(s-.65)*2.9)}
+  const cx=P.x+f*7-2,cy=P.y-30-lev*14,R=HD?rh:r;
+  R(cx+(f>0?-1:3),cy+2,2,3,PEAU);R(cx,cy,5,5,'#f4f1ea');R(cx,cy,5,1,'#5a3418');R(cx+(f>0?5:-1.5),cy+1,1.5,2.5,'#f4f1ea');if(HD){rh(cx+.5,cy+1,1,3.5,'#fff');rh(cx+3.5,cy+1,1.5,4,'#d8d2c6')}
+  if(lev<.5)for(let k=0;k<3;k++){const v=((t/3+k*11)%30)/30;ctx.globalAlpha=.55*(1-v);R(cx+1+k*1.5+Math.sin(v*6+k)*1.2,cy-2-v*12,1,1.5,'#fff');ctx.globalAlpha=1}}

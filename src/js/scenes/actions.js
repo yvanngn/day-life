@@ -1,5 +1,5 @@
 /* Séquences scénarisées (café, souris, matou, télé, départ) */
-async function takeCoffee(){if(!S.f.mouseGone)return say('mag',"Pas tant qu'il y a cette souris ! Beurk !");if(S.f.tCafe)return say('mag',"J'ai déjà eu mon café.");SFX.coffee();await wait(2400);check('tCafe');await say('mag',"Ahhh, le café. La vie reprend ses droits.")}
+async function takeCoffee(){if(!S.f.mouseGone)return say('mag',"Pas tant qu'il y a cette souris ! Beurk !");if(S.f.tCafe)return say('mag',"J'ai déjà eu mon café.");SFX.coffee();await wait(2400);P.face=-1;cafeAnim={t0:performance.now()};for(const d of [700,1150,1150]){await wait(d);tone(260,.12,{type:'sine',vol:.05,f2:180})}await wait(1000);cafeAnim=null;check('tCafe');await say('mag',"Ahhh, le café. La vie reprend ses droits.")}
 async function poseCat(){if(!S.f.catWhite)return say('mag',"Il est bien trop sale pour monter sur le bar !");
   removeItem('chat');S.f.catOnBar=true;await say('mag',"Vas-y Shaggy, au boulot !");await catHint()}
 async function jongle(){removeItem('clems');P.face=-1;await say('mag',"Mesdames et messieurs... le grand numéro de jonglage !");
