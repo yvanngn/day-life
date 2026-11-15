@@ -4,7 +4,7 @@ function waitSkip(ms){if(skipAll)return Promise.resolve();return new Promise(res
 let speech=null;
 function say(who,text){if(who==='cat'||who==='matou'){/!!!/.test(text)?SFX.angry():/^Mrrrr\.?$/.test(text)?SFX.purr():SFX.meow()}else if(who==='tv')SFX.tv();queued=null;lastSay={who:arguments[0],text:arguments[1]};if(skipAll)return Promise.resolve();return new Promise(res=>{speech={who,text,n:0};placeSpeech();let tm=null;
   const tick=setInterval(()=>{speech.n=Math.min(text.length,speech.n+2);placeSpeech();if(speech.n>=text.length)fini()},30);
-  function fini(){clearInterval(tick);speech.n=text.length;placeSpeech();tm=setTimeout(done,Math.max(1200,text.length*45))}
+  function fini(){clearInterval(tick);speech.n=text.length;placeSpeech();if(!(HD&&!navigator.webdriver))tm=setTimeout(done,Math.max(1200,text.length*45))}
   skipFn=()=>{if(speech&&speech.n<text.length){fini();return 'fini'}done()};
   function done(){clearInterval(tick);clearTimeout(tm);speech=null;placeSpeech();skipFn=null;setTimeout(res,150)}})}
 const echap=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
@@ -126,4 +126,7 @@ async function act(h,right){
 const skipBtn=$('skipBtn');
 function passer(e){if(e){e.stopPropagation();e.preventDefault()}if(!(busy||mode==='intro'))return;skipAll=true;if(skipFn)skipFn();if(skipFn)skipFn()}
 skipBtn.addEventListener('pointerdown',e=>e.stopPropagation());skipBtn.addEventListener('click',passer);
-setInterval(()=>{skipBtn.style.display=(mode==='intro'||(busy&&speech))?'block':'none'},150);
+/* V2 (comme Un Noël au Vietnam) : Espace ou Entrée = réplique suivante, Échap = passer la scène */
+window.addEventListener('keydown',e=>{if(!speech||/INPUT|TEXTAREA/.test((e.target||{}).tagName||''))return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();if(skipFn)skipFn()}else if(e.key==='Escape'){e.preventDefault();passer()}},true);
+setInterval(()=>{if(speechEl)speechEl.classList.toggle('fin',!!(speech&&speech.n>=speech.text.length));skipBtn.style.display=(mode==='intro'||(busy&&speech))?'block':'none'},150);
