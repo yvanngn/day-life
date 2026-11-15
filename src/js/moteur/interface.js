@@ -4,7 +4,7 @@ function removeItem(id){S.inv=S.inv.filter(x=>x!==id);renderInv()}
 const ITEMEX={kimono:"Mon kimono de taekwondo. Ceinture bien serrée.",laser:"Le laser pour chat. Pile chargée.",robe:"Ma robe bleue. Je la mettrai après mon bain.",serviette:"Une serviette toute douce.",coussin:"Un coussin du fauteuil.",telephone:"Mon téléphone. 47 notifications non lues.",clems:"Trois clémentines bien rondes. Idéales pour jongler.",fromage:"Un fromage grignoté par la souris. Il sent... fort."};
 function renderInv(){invEl.innerHTML='';for(let i=0;i<6;i++){const d=document.createElement('div');d.className='slot';const id=S.inv[i];
   if(id){d.classList.add('has');d.appendChild(iconCanvas(id));d.title=ITEMS[id];if(pending===id)d.classList.add('sel');if(S.f.used[id])d.classList.add('used');
-   d.onclick=()=>clickItem(id);d.oncontextmenu=e=>{e.preventDefault();if(busy||mode!=='play')return;verb='examiner';pending=null;updVerbs();clickItem(id)};d.onmouseenter=()=>{hover=ITEMS[id];updSentence()};d.onmouseleave=()=>{hover='';updSentence()}}
+   d.onclick=()=>clickItem(id);d.oncontextmenu=e=>{e.preventDefault();if(HD)return roueInv(id,e.clientX,e.clientY);if(busy||mode!=='play')return;verb='examiner';pending=null;updVerbs();clickItem(id)};d.onmouseenter=()=>{hover=ITEMS[id];updSentence()};d.onmouseleave=()=>{hover='';updSentence()}}
   invEl.appendChild(d)}}
 function clickItem(id){if(busy||mode!=='play')return;
   if(S.f.used[id]&&verb!=='examiner')return run(()=>say('mag',id==='chat'?"Shaggy a fini sa mission. Il dort.":"Je n'en ai plus besoin."));
@@ -14,6 +14,7 @@ function clickItem(id){if(busy||mode!=='play')return;
   if(verb==='examiner')return run(()=>say('mag',id==='chat'?(S.f.catWhite?"Shaggy, tout blanc et tout propre.":"Shaggy ronronne dans mes bras. Pour l'instant."):ITEMEX[id]));
   if(verb==='prendre')return run(()=>say('mag',"Je l'ai déjà."));
   if(verb==='ouvrir')return run(()=>say('mag',id==='chat'?"On n'ouvre pas un chat !":"Ça ne s'ouvre pas."));
+  if(verb==='parler')return run(()=>id==='chat'?say('cat',"Miaou ?"):say('mag',"Ça ne répond pas."));
 }
 
 /* ---------- checklist ---------- */

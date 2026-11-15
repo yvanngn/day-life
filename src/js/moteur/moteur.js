@@ -80,14 +80,17 @@ const roueEl=$('roue');let roueFermee=0;
 roueEl.addEventListener('pointerdown',e=>e.stopPropagation());roueEl.addEventListener('click',e=>e.stopPropagation());roueEl.addEventListener('contextmenu',e=>{e.preventDefault();e.stopPropagation()});
 function roueOuverte(){return roueEl.style.display==='block'}
 function fermerRoue(){roueEl.style.display='none';roueEl.innerHTML=''}
-function ouvrirRoue(h,cx,cy){const g=stage.getBoundingClientRect(),R=Math.max(40,Math.min(70,g.width*.075)),m=R+26;
+function ouvrirRoue(h,cx,cy,cb){const g=stage.getBoundingClientRect(),R=Math.max(40,Math.min(70,g.width*.075)),m=R+26;
   const x=Math.max(m,Math.min(g.width-m,cx-g.left)),y=Math.max(Math.min(m+30,g.height/2),Math.min(g.height-Math.min(m,g.height/2),cy-g.top));
   roueEl.style.left=x+'px';roueEl.style.top=y+'px';roueEl.innerHTML='<div class="rc"></div>';roueEl.firstChild.textContent=h.name;roueEl.firstChild.style.top=(-R-46)+'px'; // nom en haut, comme Un Noël au Vietnam
   ROUE.forEach(([a,ic,lib],k)=>{const ang=-Math.PI/2+k*2*Math.PI/ROUE.length,b=document.createElement('button');
     b.dataset.a=a;b.innerHTML='<span>'+ic+'</span>'+lib;b.style.animationDelay=(k*20)+'ms';
     b.style.left=Math.round(Math.cos(ang)*R)+'px';b.style.top=Math.round(Math.sin(ang)*R)+'px';
-    b.addEventListener('click',e=>{e.stopPropagation();fermerRoue();choisirRoue(h,a)});roueEl.appendChild(b)});
+    b.addEventListener('click',e=>{e.stopPropagation();fermerRoue();cb?cb(a):choisirRoue(h,a)});roueEl.appendChild(b)});
   roueEl.style.display='block'}
+/* V2 : clic droit sur un objet de l'inventaire = roue aussi ; un clic sur l'inventaire pendant un dialogue fait avancer le dialogue */
+function roueInv(id,cx,cy){if(busy||mode!=='play')return;pending=null;verb=null;renderInv();ouvrirRoue({name:ITEMS[id]},cx,cy,a=>{verb=a;updVerbs();clickItem(id);if(a!=='utiliser')verb=null})}
+['click','contextmenu'].forEach(n=>invEl.addEventListener(n,e=>{if(speech&&skipFn){e.preventDefault();e.stopPropagation();skipFn()}},true));
 /* appui long sur écran tactile = clic droit */
 let appui=null,appuiFait=0;
 stage.addEventListener('pointerdown',e=>{clearTimeout(appui);if(e.pointerType==='mouse'||!HD)return;const ev={clientX:e.clientX,clientY:e.clientY};appui=setTimeout(()=>{if(busy||mode!=='play')return;const [px,py]=toScene(ev),h=hitSpot(px,py);if(h){ouvrirRoue(h,ev.clientX,ev.clientY);appuiFait=performance.now()}},450)});

@@ -136,6 +136,12 @@ async def scenario_bain(nav):
     print('\n▶ Salle de bain')
     pg=await nouvelle_page(nav,'PACHA'); E=pg.evaluate
     await E("T.act('utiliser','baignoire')"); verif('Bain pris et habillée',await E("S.f.bath&&S.f.dressed&&S.f.tHabit&&!S.inv.includes('robe')"))
+    await pg.click('#inv .slot.has[title="'+await E("ITEMS.chat")+'"]',button='right'); await pg.wait_for_timeout(200)
+    verif('Clic droit inventaire : roue avec le nom',await E("roueOuverte()&&roueEl.querySelector('.rc').textContent===ITEMS.chat"))
+    await pg.click('#roue [data-a=utiliser]'); verif('Roue inventaire : Utiliser = Shaggy en main',await E("pending==='chat'&&!roueOuverte()"),await E('pending'))
+    await E("pending=null;verb=null;run(()=>say('mag','Un dialogue à passer.')); 0"); await pg.wait_for_timeout(50)
+    await pg.click('#inv .slot'); await pg.click('#inv .slot'); await pg.wait_for_timeout(300)
+    verif('Clic sur l’inventaire pendant un dialogue : il avance',await E("!speech&&!busy"),await E('speech&&speech.text'))
     await E("T.act('utiliser','baignoire','chat')"); verif('Shaggy lavé : blanc',await E("S.f.catWhite&&S.f.tShaggy&&S.f.scratch"))
     await E("T.act('prendre','serviette')"); verif('Serviette prise',await E("S.inv.includes('serviette')"))
     await E("T.act(null,'porte')"); verif('Griffure effacée en sortant',not await E("S.f.scratch"))
