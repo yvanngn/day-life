@@ -159,6 +159,8 @@ async def scenario_salon(nav):
     await pg.click('#aideBtn'); verif('Aide : indice précis si on redemande',await E("speech.text.startsWith('Indice précis : ')")); await E('T.settle()')
     await E("T.act('utiliser','cafe')"); verif('Café refusé tant que la souris est là',not await E("S.f.tCafe"))
     await E("T.act(null,'entree')"); verif('Départ refusé, liste incomplète',await E("mode")=='play')
+    await E("T.act('ouvrir','entree')"); verif('Ouvrir la porte d’entrée : pas fini',await E("mode==='play'&&!S.f.tWork&&lastSay.text.startsWith('Il reste')"),await E('lastSay'))
+    await E("T.act('utiliser','entree')"); verif('Utiliser la porte d’entrée : pas fini',await E("mode==='play'&&!S.f.tWork"))
     await E("T.act('utiliser','souris','chat')"); verif('Shaggy posé sur le bar',await E("S.f.catOnBar"))
     await E("T.act('utiliser','shaggyBar','laser')"); verif('Souris chassée',await E("S.f.mouseGone&&!S.f.catOnBar"))
     await E("void T.act('utiliser','cafe')"); await pg.wait_for_function("!!cafeAnim",timeout=8000); verif('Animation : Magali boit son café',await E("!!cafeAnim"))
@@ -190,8 +192,8 @@ async def scenario_complet(nav):
               "'utiliser','matou','clems'","null,'esc'","'utiliser','litiere','fromage'"]:
         await E(f"T.act({a})")
     verif('Couloir nettoyé',await E("S.f.tCouloir"))
-    await E("T.act(null,'esc')"); r=await E("T.act(null,'entree')")
-    verif('Toutes les tâches faites, fin du chapitre',r=='fin' and await E("S.f.tWork&&mode==='end'"),await E('T.etat()'))
+    await E("T.act(null,'esc')"); r=await E("T.act('ouvrir','entree')")
+    verif('Toutes les tâches faites, Ouvrir la porte : fin du chapitre',r=='fin' and await E("S.f.tWork&&mode==='end'"),await E('T.etat()'))
     await fin(pg)
 
 GROUPES={'menu':['scenario_menu'],'chambre':['scenario_chambre'],'couloir':['scenario_couloir'],'bain':['scenario_bain'],

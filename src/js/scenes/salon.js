@@ -66,7 +66,7 @@ ROOMS.salon={walk:[14,305,116,140],draw:drawSalon,spots:()=>[
   {id:'shaggyBar',name:'Shaggy',vis:()=>S.f.catOnBar,r:[barCat.x-15,barCat.y-18,30,20],w:[136,124],examiner:()=>catHint(),click:()=>catHint(),utiliser:()=>catHint(),prendre:()=>say('mag',"Non, il a une mission."),
    with:{laser:()=>laserBar()}},
   {id:'vitre',name:'porte vitrée',r:[126,24,30,80],w:[141,122],exit:()=>say('mag',"C'est la porte du jardin, elle est fermée. Je sors par l'entrée."),examiner:()=>say('mag',"La porte vitrée du jardin. Fermée.")},
-  {id:'entree',name:"porte d'entrée",r:[290,28,30,78],w:[300,128],exit:()=>leave(),examiner:()=>say('mag',"La porte d'entrée. Le monde du travail m'attend derrière.")},
+  {id:'entree',name:"porte d'entrée",r:[290,28,30,78],w:[300,128],exit:()=>leave(),ouvrir:()=>leave(),utiliser:()=>leave(),examiner:()=>say('mag',"La porte d'entrée. Le monde du travail m'attend derrière.")},
   {id:'bureau',name:'porte du bureau',r:[158,35,28,70],w:[172,124],exit:()=>say('mag',"Mon bureau ? Pas aujourd'hui, c'est fermé."),examiner:()=>say('mag',"La porte du bureau. Fermée.")},
   {id:'fauteuil',name:'fauteuil',r:[186,70,48,40],w:[210,124],examiner:()=>say('mag',"Mon fauteuil blanc. Le chat n'a pas le droit dessus. En théorie."),utiliser:()=>say('narr',"On n'a pas le temps de s'asseoir !")},
   {id:'telephone',name:'téléphone',vis:()=>S.f.cushion&&!S.f.phone,r:[202,86,14,8],w:[178,130],examiner:()=>say('mag',"MON TÉLÉPHONE ! Il était là !"),
