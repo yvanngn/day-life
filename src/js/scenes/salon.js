@@ -17,7 +17,7 @@ function drawSalon(){
  // fromage + souris
  if(!S.f.cheese){r(84,72,10,6,'#f2c832');r(86,74,2,2,'#d8a820');r(90,73,1,1,'#d8a820')}
  if(!S.f.mouseGone||mouse.flee){const mx=mouse.x,b=(t>>3)%2;if(HD)mouseHD(mx,0,b);else{r(mx-6,73-b,7,4,'#8a8a90');r(mx+1,74-b,3,3,'#9a9aa0');r(mx,72-b,2,2,'#d08a9a');r(mx+3,75-b,1,1,'#111');r(mx-10,76,4,1,'#d08a9a')}}
- if(S.f.catOnBar){const j=barCat.jump;drawCatRows(CAT_W,cpal(),Math.round(barCat.x-14),Math.round(barCat.y-16-j),true)}
+ if(S.f.catOnBar){const j=barCat.jump;if(HD)chatHD('debout',(t>>5)%4,t%230<7,chatPal(cpal()),Math.round(barCat.x-14),Math.round(barCat.y-16-j),true);else drawCatRows(CAT_W,cpal(),Math.round(barCat.x-14),Math.round(barCat.y-16-j),true)}
  // porte vitrée
  r(128,26,26,78,'#3a2a20');r(131,29,20,75,'#9ad0e8');r(140,29,2,75,'#3a2a20');r(133,34,5,2,'#e8f8ff');r(144,40,4,2,'#e8f8ff');r(136,62,3,4,'#c8a040');r(144,62,3,4,'#c8a040');
  r(131,84,20,20,'#6ab04a');r(131,80,20,4,'#7ac0e0');
@@ -44,6 +44,7 @@ function drawSalon(){
  if(!S.f.tMatou&&mt.state!=='gone'){const G={O:'#8a8a94',o:'#5a5a64',W:'#e8e8e8',k:'#1a1a1a',P:'#ff8aa0'};
    if(mt.state==='sleep'){drawCatRows(["....oOOOOo....","..OOoOOoOOOO..",".OoOOOOOOOoOOO",".OOOOOOOOOkOOk","..OOOOOOOOOOO."],G,mt.x-14,mt.y-10,false);
      const z=(t>>5)%3;ctx.fillStyle='#fff';ctx.font='6px monospace';ctx.fillText('z'.repeat(z+1),mt.x+12,mt.y-14-z*2)}
+   else if(HD)chatHD(mt.state==='walk'?'marche':'debout',mt.state==='walk'?(t>>2)%4:(t>>5)%4,t%260<7,chatPal(G,'#e8c840'),Math.round(mt.x-14),Math.round(mt.y-16),mt.face<0,mt.state==='walk'&&(t>>2)%2?-.5:0);
    else{let rows=CAT_W;if(mt.state==='walk'&&(t>>3)%2)rows=CAT_W.map((x,i)=>i===6?"..O.O.O..O.O.O":i===7?"..W.W.W..W.W.W":x);drawCatRows(rows,G,Math.round(mt.x-14),Math.round(mt.y-16),mt.face<0)}}
 }
 
@@ -184,7 +185,7 @@ function drawSalon2(){
  // fromage
  if(!S.f.cheese){rh(84,72,10,6,'#f2c832');rh(84,72,10,.5,'#fff080');rh(93.5,72,.5,6,'#c89a10');ovale2(87,75,1,1,'#d8a820');ovale2(91,73.5,.6,.6,'#d8a820')}
  if(!S.f.mouseGone||mouse.flee)mouseHD(mouse.x,0,(t>>3)%2);
- if(S.f.catOnBar){const j=barCat.jump;drawCatRows(CAT_W,cpal(),Math.round(barCat.x-14),Math.round(barCat.y-16-j),true)}
+ if(S.f.catOnBar){const j=barCat.jump;if(HD)chatHD('debout',(t>>5)%4,t%230<7,chatPal(cpal()),Math.round(barCat.x-14),Math.round(barCat.y-16-j),true);else drawCatRows(CAT_W,cpal(),Math.round(barCat.x-14),Math.round(barCat.y-16-j),true)}
  // porte vitrée sur le jardin
  panneau2(127,25,28,79,'#3a2a20','#6a4a30','#1a0e08');
  bandes2(131,29,20,51,['#7ab8d8','#8ac4e0','#9ad0e8','#a8d8ec']);
@@ -232,5 +233,6 @@ function drawSalon2(){
  if(!S.f.tMatou&&mt.state!=='gone'){const G={O:'#8a8a94',o:'#5a5a64',W:'#e8e8e8',k:'#1a1a1a',P:'#ff8aa0'};
    if(mt.state==='sleep'){drawCatRows(["....oOOOOo....","..OOoOOoOOOO..",".OoOOOOOOOoOOO",".OOOOOOOOOkOOk","..OOOOOOOOOOO."],G,mt.x-14,mt.y-10,false);
      const z=(t>>5)%3;ctx.fillStyle='#fff';ctx.font='6px monospace';ctx.fillText('z'.repeat(z+1),mt.x+12,mt.y-14-z*2)}
+   else if(HD)chatHD(mt.state==='walk'?'marche':'debout',mt.state==='walk'?(t>>2)%4:(t>>5)%4,t%260<7,chatPal(G,'#e8c840'),Math.round(mt.x-14),Math.round(mt.y-16),mt.face<0,mt.state==='walk'&&(t>>2)%2?-.5:0);
    else{let rows=CAT_W;if(mt.state==='walk'&&(t>>3)%2)rows=CAT_W.map((x,i)=>i===6?"..O.O.O..O.O.O":i===7?"..W.W.W..W.W.W":x);drawCatRows(rows,G,Math.round(mt.x-14),Math.round(mt.y-16),mt.face<0)}}
 }
