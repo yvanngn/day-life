@@ -76,6 +76,10 @@ async def scenario_menu(nav):
 async def scenario_chambre(nav):
     print('\n▶ Chambre')
     pg=await nouvelle_page(nav,'REVEIL'); E=pg.evaluate
+    c=await E("(()=>{const h=T.spot('armoire'),b=cv.getBoundingClientRect();return [b.left+(h.r[0]+h.r[2]/2)/W*b.width,b.top+(h.r[1]+h.r[3]/2)/H*b.height]})()")
+    await E("run(()=>say('mag','Une réplique à passer.')); 0"); await pg.wait_for_timeout(50)
+    await pg.mouse.click(c[0],c[1]); await pg.mouse.click(c[0],c[1]); await pg.wait_for_timeout(700)
+    verif('Clic pendant un dialogue : passe la réplique sans examiner l’armoire',await E("!busy&&!speech&&lastSay.text==='Une réplique à passer.'"),await E('lastSay'))
     await E("T.act('prendre','armoire')"); verif('Armoire fermée : rien à prendre',not await E("S.inv.includes('robe')"))
     await E("T.act('ouvrir','armoire')"); verif('Armoire ouverte',await E("S.f.armoire"))
     await E("T.act('prendre','robe')"); verif('Robe bleue prise',await E("S.inv.includes('robe')"))

@@ -52,7 +52,7 @@ let queued=null,lastSay=null;
 function replayQueued(){if(!queued||busy||mode!=='play')return;const q=queued;queued=null;if(performance.now()-q.t<1500)(q.right?onRight:onLeft)(q)}
 stage.addEventListener('click',e=>onLeft(e));
 function onLeft(e){
-  if(skipFn){if(skipFn()==='fini')return;queued={clientX:e.clientX,clientY:e.clientY,right:false,t:performance.now()};return}
+  if(skipFn){skipFn();return}
   if(busy||mode!=='play')return;
   checkEl.style.display='none';
   const [px,py]=toScene(e);const h=hitSpot(px,py);
@@ -69,7 +69,7 @@ stage.addEventListener('mouseleave',()=>{curEl.style.display='none'});
 cv.addEventListener('mousemove',e=>{if(mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);const n=h?h.name:'';if(n!==hover){hover=n;updSentence()}});
 cv.addEventListener('mouseleave',()=>{hover='';updSentence()});
 stage.addEventListener('contextmenu',e=>{e.preventDefault();onRight(e)});
-function onRight(e){if(skipFn){if(skipFn()==='fini')return;queued={clientX:e.clientX,clientY:e.clientY,right:true,t:performance.now()};return}if(busy||mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);if(!h)return;
+function onRight(e){if(skipFn){skipFn();return}if(busy||mode!=='play')return;const [px,py]=toScene(e);const h=hitSpot(px,py);if(!h)return;
   if(!HD)return choisirRoue(h,'examiner'); // V1 : clic droit classique = examiner
   ouvrirRoue(h,e.clientX,e.clientY)}
 /* Roue des actions V2 (comme Low Kanta) : clic gauche = action évidente, clic droit (ou appui long) = roue, toutes les actions sur toute cible */
