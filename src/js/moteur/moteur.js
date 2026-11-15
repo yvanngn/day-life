@@ -81,8 +81,8 @@ roueEl.addEventListener('pointerdown',e=>e.stopPropagation());roueEl.addEventLis
 function roueOuverte(){return roueEl.style.display==='block'}
 function fermerRoue(){roueEl.style.display='none';roueEl.innerHTML=''}
 function ouvrirRoue(h,cx,cy){const g=stage.getBoundingClientRect(),R=Math.max(40,Math.min(70,g.width*.075)),m=R+26;
-  const x=Math.max(m,Math.min(g.width-m,cx-g.left)),y=Math.max(Math.min(m,g.height/2),Math.min(g.height-Math.min(m,g.height/2),cy-g.top));
-  roueEl.style.left=x+'px';roueEl.style.top=y+'px';roueEl.innerHTML='<div class="rc"></div>';roueEl.firstChild.textContent=h.name;
+  const x=Math.max(m,Math.min(g.width-m,cx-g.left)),y=Math.max(Math.min(m+30,g.height/2),Math.min(g.height-Math.min(m,g.height/2),cy-g.top));
+  roueEl.style.left=x+'px';roueEl.style.top=y+'px';roueEl.innerHTML='<div class="rc"></div>';roueEl.firstChild.textContent=h.name;roueEl.firstChild.style.top=(-R-46)+'px'; // nom en haut, comme Un Noël au Vietnam
   ROUE.forEach(([a,ic,lib],k)=>{const ang=-Math.PI/2+k*2*Math.PI/ROUE.length,b=document.createElement('button');
     b.dataset.a=a;b.innerHTML='<span>'+ic+'</span>'+lib;b.style.animationDelay=(k*20)+'ms';
     b.style.left=Math.round(Math.cos(ang)*R)+'px';b.style.top=Math.round(Math.sin(ang)*R)+'px';

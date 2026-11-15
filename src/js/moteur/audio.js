@@ -1,5 +1,5 @@
 /* ---------- sons (synthétisés) ---------- */
-let AC=null,muted=false;try{muted=localStorage.getItem('magali_mute')==='1'}catch(e){}
+let AC=null,muted=false; // son toujours ON au lancement
 function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}if(AC.state==='suspended')AC.resume();return AC}
 const NBUF={};
 function noiseBuf(a,d){const k=Math.round(d*100);if(NBUF[k])return NBUF[k];return NBUF[k]=mkNoise(a,d)}
