@@ -12,7 +12,7 @@ const AIDES={
   {si:()=>true,v:"Les vêtements sont rangés quelque part dans la chambre.",p:"Ouvre l'armoire de la chambre."}],
  tCafe:[
   {si:()=>S.f.mouseGone,v:"La voie est libre : la machine t'attend.",p:"Utilise la machine à café du salon."},
-  {si:()=>S.f.catOnBar,v:"Shaggy a besoin d'une petite motivation pour chasser.",p:"Utilise le laser sur Shaggy, posé sur le bar."},
+  {si:()=>S.f.catOnBar,v:"Shaggy a besoin d'une petite motivation pour chasser.",p:"Utilise le laser sur Shaggy. Le laser doit être à l’étage."},
   {si:()=>aDispo('chat')&&S.f.catWhite,v:"Une souris squatte le bar... et tu as un chasseur dans les bras.",p:"Utilise Shaggy sur la souris du bar."},
   {si:()=>true,v:"Impossible de prendre un café avec cette souris sur le bar.",p:"Il faut un chasseur propre : lave d'abord Shaggy, puis pose-le près de la souris."}],
  tPhone:[
